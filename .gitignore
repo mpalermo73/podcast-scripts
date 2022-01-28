@@ -1,0 +1,14 @@
+__pycache__
+*~
+wowapi/battle.net_api_key
+secret_stuff.sh
+secret_stuff.py
+secret_stuff.php
+googleCalOAuth.json
+*.pyc
+*.kate-swp
+.DS_Store
+__init__.py
+master.php
+wow.curseforge.com
+www.wowace.com
