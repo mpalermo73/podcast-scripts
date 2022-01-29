@@ -219,7 +219,7 @@ function AnnounceEpisode() {
 
   [ ${DEBUG} ] && echo PAYLOAD: \"$(echo ${OUTPUT} | sed 's/\\n/\n/g')\"
 
-  $HOME/GIT/podcast-scripts/slack.py -c another -i headphones -u "${PRETTY_NAME}" -m "$(echo ${OUTPUT} | sed 's/\\n/\n/g')"
+  $HOME/GIT/scripts-git/slack.py -c another -i headphones -u "${PRETTY_NAME}" -m "$(echo ${OUTPUT} | sed 's/\\n/\n/g')"
 }
 
 
