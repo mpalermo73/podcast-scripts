@@ -10,7 +10,7 @@ PRETTY_NAME="Trailer Park Boys"
 # DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
-# UPDATE_SYNCTHING=TRUE
+UPDATE_SYNCTHING=TRUE
 
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
