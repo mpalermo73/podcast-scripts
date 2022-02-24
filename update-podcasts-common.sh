@@ -242,7 +242,7 @@ function DisectInfo() {
 
     [ ${DEBUG} ] && echo "TRACK IS ONLY NUMBERS: \"$TRACK\""
 
-    TITLE_CLEAN=$(echo "${TITLE}" | sed 's/[!?,%#<>`*|/\:@]//g ; s/&/and/g')
+    TITLE_CLEAN=$(echo "${TITLE}" | sed 's/[!?,%#<>`|/\:@]//g ; s/&/and/g ; s/*/_/g')
 
     OUTFILE="${TRACK} - $(echo "${TITLE_CLEAN}" | cut -d' ' -f3-).mp3"
 
