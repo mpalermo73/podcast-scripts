@@ -320,9 +320,8 @@ function CurlFeed() {
 
   # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
   # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
-
   # | //item/*[name()="itunes:summary"]
-echo 1
+
   EPISODES="$(curl -sL ${URL_RSS} \
     | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
     | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
@@ -333,7 +332,6 @@ echo 1
     | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
     | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' \
     | sed 's/.*itunes:image href="\?\(.*\)"\?\/>.*/IMAGE="\1"/')"
-echo 2
 }
 
 
