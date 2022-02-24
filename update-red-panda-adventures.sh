@@ -4,7 +4,7 @@ URL_RSS="https://decoderring.libsyn.com/rss"
 PRETTY_NAME="Red Panda Adventures"
 GOOD_REGEX="^Red Panda Adv"
 
-# wget -q -O - "https://decoderring.libsyn.com/rss" | xmllint --format --nsclean --xpath '//item[contains(.,"Red Panda Adv")] | //item/title[text()] | //item/*[name()="enclosure"] | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g' | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' | sed 's/.*itunes:image href="\?\(.*\)"\?\/>/IMAGE="\1"/'
+# curl -sL "https://decoderring.libsyn.com/rss" | xmllint --format --nsclean --xpath '//item[contains(.,"Red Panda Adv")] | //item/title[text()] | //item/*[name()="enclosure"] | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g' | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' | sed 's/.*itunes:image href="\?\(.*\)"\?\/>/IMAGE="\1"/'
 
 # DEBUG=TRUE
 # JUST_TEST=TRUE

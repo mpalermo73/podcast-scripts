@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-URL_RSS="http://feeds.soundcloud.com/users/soundcloud:users:200829781/sounds.rss"
+URL_RSS="http://feeds.libsyn.com/228662/rss"
 PRETTY_NAME="Artie Lange's Halfway House"
 GOOD_REGEX="^[0-9]+"
 
@@ -20,7 +20,7 @@ for LINE in ${EPISODES} ; do
 
   eval "${LINE}"
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" -a ${EPISODE}" ] ; then
+  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" -a "${EPISODE}" ] ; then
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
