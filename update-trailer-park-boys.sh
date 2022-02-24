@@ -64,10 +64,10 @@ for LINE in ${EPISODES} ; do
   fi
 done
 
-# SEASON_CURRENT="$(curl -sL "https://www.swearnet.com/shows/park-after-dark" | grep -c1 "^Season [0-9]\+")"
-# SEASON_COUNT="$(curl -sL "https://www.swearnet.com/shows/park-after-dark/seasons" | grep -c "Season [0-9]\+")"
+# SEASON_CURRENT="$(wget -q -O - "https://www.swearnet.com/shows/park-after-dark" | grep -c1 "^Season [0-9]\+")"
+# SEASON_COUNT="$(wget -q -O - "https://www.swearnet.com/shows/park-after-dark/seasons" | grep -c "Season [0-9]\+")"
 
-# -> % for S in 1 2 3 ; do curl -sl --head $(curl -sL "https://www.swearnet.com/shows/park-after-dark/seasons/$S" | grep -B1 ".*href.*seasons/$S/episodes/1\".*" | sed 's/.*url(\(\/\/.*jpeg\)).*/http:\1/' | grep "^http") | grep Modified ; done
+# -> % for S in 1 2 3 ; do wget -q -O - --head $(wget -q -O - "https://www.swearnet.com/shows/park-after-dark/seasons/$S" | grep -B1 ".*href.*seasons/$S/episodes/1\".*" | sed 's/.*url(\(\/\/.*jpeg\)).*/http:\1/' | grep "^http") | grep Modified ; done
 # Last-Modified: Fri, 28 Feb 2020 22:42:24 GMT
 # Last-Modified: Fri, 29 May 2020 09:52:52 GMT
 # Last-Modified: Sat, 29 May 2021 00:08:55 GMT

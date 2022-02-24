@@ -12,7 +12,7 @@ GOOD_REGEX="^[0-9].*$"
 # UPDATE_SYNCTHING=TRUE
 
 
-EPISODES="$(curl -sL ${URL_RSS} | xmllint --format - \
+EPISODES="$(wget -q -O - ${URL_RSS} | xmllint --format - \
   | egrep "<title>|<pubDate>|<enclosure.*url" \
   | sed 's/"//g;s/\&amp\;/\&/g;s/^\ \+//g;s/<title>\(.*\)<\/title>/TITLE="\1"/;s/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/;s/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/')"
 

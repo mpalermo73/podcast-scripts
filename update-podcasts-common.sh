@@ -323,7 +323,7 @@ function CurlFeed() {
 
   # | //item/*[name()="itunes:summary"]
 
-  EPISODES="$(curl -sL ${URL_RSS} \
+  EPISODES="$(wget -q -O - ${URL_RSS} \
     | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
     | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
     | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' \
