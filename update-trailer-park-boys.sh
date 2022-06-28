@@ -23,8 +23,8 @@ S01="1554436800"
 S02="1590724800"
 # S03: May 28 2021 9:00PM UTC - 1622174400
 S03="1622174400"
-# S04:
-S04=""
+# S04: May 30 00:00 - 1653883200
+S04="1653883200"
 
 for LINE in ${EPISODES} ; do
 
@@ -34,10 +34,11 @@ for LINE in ${EPISODES} ; do
 
     PUBEPOCH=$(date -d "${PUBDATE}" +%s)
 
-    if [ ${PUBEPOCH} -ge ${S03} ] ; then
-      if [ "${PUBEPOCH}" -lt ${S02} ] ; then SEASON="01"
-      elif [ "${PUBEPOCH}" -ge ${S02} -a "${PUBEPOCH}" -lt ${S03} ] ; then SEASON="02"
+    if [ ${PUBEPOCH} -ge ${S04} ] ; then
+      if [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
       elif [ "${PUBEPOCH}" -ge ${S03} ] ; then SEASON="03"
+      elif [ "${PUBEPOCH}" -ge ${S02} ] ; then SEASON="02"
+      elif [ "${PUBEPOCH}" -lt ${S02} ] ; then SEASON="01"
       else
         echo "CAN'T FIND SEASON: ${PUBEPOCH}"
         echo "${PUBEPOCH} - ${SEASON} - ${TITLE}"
