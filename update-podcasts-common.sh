@@ -234,6 +234,8 @@ function DisectInfo() {
 
   [ ! "${EPISODE}" ] && EPISODE=$(date -d "${PUBDATE}" +%y%m%d)
 
+  [ "${IMAGE}" ] && IMAGE="$(echo "${IMAGE}" | sed 's/\(.*\)?.*/\1/')"
+
   TRACK="$(echo ${TITLE} | awk '{print $1}' | sed 's/\([0-9]\+\).*/\1/')"
   [ ${#TRACK} -eq 1 ] && TRACK="00${TRACK}"
   [ ${#TRACK} -eq 2 ] && TRACK="0${TRACK}"
