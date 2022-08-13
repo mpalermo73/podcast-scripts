@@ -167,17 +167,7 @@ function EpisodeTagging() {
 
   [ ${DEBUG} ] && echo "EpisodeTagging \"$TAGGING_FILE\""
 
-  if [ ${DEBUG} ] ; then
-    echo -e "\\tTAGGING_FILE: ${TAGGING_FILE}"
-    echo -e "\\tTRACK: ${TRACK}"
-    echo -e "\\tOUTFILE: ${OUTFILE}"
-    echo -e "\\tPUBDATE: ${PUBDATE}"
-    echo -e "\\tFILEURL: ${FILEURL}"
-    echo -e "\\tYEAR: ${YEAR}"
-    echo -e "\\tTITLE: ${TITLE}"
-    echo -e "\\tTITLE_CLEAN: ${TITLE_CLEAN}"
-    echo -e "\\tPODCAST_ALBUM_ART: ${PODCAST_ALBUM_ART}"
-  fi
+  [ ${DEBUG} && DumpFound
 
   eyeD3 -l critical --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
 
