@@ -167,7 +167,7 @@ function EpisodeTagging() {
 
   [ ${DEBUG} ] && echo "EpisodeTagging \"$TAGGING_FILE\""
 
-  [ ${DEBUG} && DumpFound
+  [ ${DEBUG} ] && DumpFound
 
   eyeD3 -l critical --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
 
