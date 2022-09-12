@@ -6,7 +6,7 @@ GOOD_REGEX="[eE][pP] [0-9]+"
 
 # DEBUG=TRUE
 # JUST_TEST=TRUE
-# NO_SLACK=TRUE
+NO_SLACK=TRUE
 # UPDATE_SYNCTHING=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
