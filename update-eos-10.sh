@@ -19,7 +19,7 @@ for LINE in ${EPISODES} ; do
 
   eval "${LINE}"
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" ] ; then
+  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" -a "${TYPE}" -a "${SEASON}" -a "${EPISODE}" ] ; then
 
     [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
