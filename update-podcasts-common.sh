@@ -314,7 +314,7 @@ function CurlFeed() {
   # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
   # | //item/*[name()="itunes:summary"]
 
-  EPISODES="$(curl -sL ${URL_RSS} \
+  EPISODES="$(curl -sL ${URL_RSS} | tidy -xml -w 100000 -q - \
     | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
     | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
     | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' \
