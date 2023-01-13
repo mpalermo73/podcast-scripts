@@ -230,15 +230,14 @@ function DisectInfo() {
   [ ${#TRACK} -eq 1 ] && TRACK="00${TRACK}"
   [ ${#TRACK} -eq 2 ] && TRACK="0${TRACK}"
 
+
   if [[ "${TRACK}" =~ ^[0-9]+$ ]] ; then
 
     [ ${DEBUG} ] && echo "TRACK IS ONLY NUMBERS: \"$TRACK\""
 
-    TITLE_CLEAN=$(echo "${TITLE}" | sed 's/[!?,%#<>`|/\:@]//g ; s/&/and/g ; s/*/_/g')
-
-    OUTFILE="${TRACK} - $(echo "${TITLE_CLEAN}" | cut -d' ' -f3-).mp3"
-
     TITLE=$(echo "${TITLE}" | cut -d' ' -f3-)
+
+    OUTFILE="${TRACK} - ${TITLE}.mp3"
 
     PUBEPOCH="$(date -d "${PUBDATE}" +%s)"
 
@@ -330,26 +329,25 @@ function CurlFeed() {
 
 function DumpFound() {
   echo "FOUND ALL:"
-  echo -e "\\tPRETTY_NAME: ${PRETTY_NAME}"
-  echo -e "\\tGENERIC_NAME: ${GENERIC_NAME}"
-  echo -e "\\tPUBDATE: ${PUBDATE}"
-  echo -e "\\tPUBEPOCH: $PUBEPOCH"
-  echo -e "\\tPRETITLE: ${PRETITLE}"
-  echo -e "\\tTYPE: ${TYPE}"
-  echo -e "\\tSEASON: ${SEASON}"
-  echo -e "\\tEPISODE: ${EPISODE}"
-  echo -e "\\tTITLE: ${TITLE}"
-  echo -e "\\tEPURL: ${EPURL}"
-  echo -e "\\tTRACK: ${TRACK}"
-  echo -e "\\tOUTFILE: ${OUTFILE}"
-  echo -e "\\tTITLE_CLEAN: ${TITLE_CLEAN}"
-  echo -e "\\tIMAGE: ${IMAGE}"
-  echo -e "\\tDO_RETAG: ${DO_RETAG}"
+  [ "${PRETTY_NAME}" ] && echo -e "\\tPRETTY_NAME: ${PRETTY_NAME}"
+  [ "${GENERIC_NAME}" ] && echo -e "\\tGENERIC_NAME: ${GENERIC_NAME}"
+  [ "${PUBDATE}" ] && echo -e "\\tPUBDATE: ${PUBDATE}"
+  [ "${PUBEPOCH}" ] && echo -e "\\tPUBEPOCH: ${PUBEPOCH}"
+  [ "${PRETITLE}" ] && echo -e "\\tPRETITLE: ${PRETITLE}"
+  [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
+  [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
+  [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
+  [ "${TITLE}" ] && echo -e "\\tTITLE: ${TITLE}"
+  [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
+  [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
+  [ "${OUTFILE}" ] && echo -e "\\tOUTFILE: ${OUTFILE}"
+  [ "${IMAGE}" ] && echo -e "\\tIMAGE: ${IMAGE}"
+  [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
 }
 
 
 
 function UnsetThese() {
   # unset EPURL PUBDATE PUBEPOCH OLD OUTFILE TITLE TRACK IMAGE PODCAST_ALBUM_ART
-  unset EPURL IMAGE EPISODE NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE SEASON TITLE TITLE_CLEAN TRACK TYPE
+  unset EPURL IMAGE EPISODE NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE SEASON TITLE TRACK TYPE
 }
