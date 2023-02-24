@@ -237,7 +237,7 @@ function DisectInfo() {
 
     TITLE=$(echo "${TITLE}" | cut -d' ' -f3-)
 
-    OUTFILE="${TRACK} - $(echo ${TITLE} | sed 's/[*]/_/g').mp3"
+    OUTFILE="${TRACK} - $(echo ${TITLE} | sed 's/[?!*]/_/g').mp3"
 
     PUBEPOCH="$(date -d "${PUBDATE}" +%s)"
 
