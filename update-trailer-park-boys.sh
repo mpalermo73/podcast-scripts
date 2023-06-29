@@ -25,6 +25,8 @@ S02="1590724800"
 S03="1622174400"
 # S04: May 30 00:00 - 1653883200
 S04="1653883200"
+# S05: May 29 12:00:00
+S05="1685332800"
 
 for LINE in ${EPISODES} ; do
 
@@ -34,8 +36,9 @@ for LINE in ${EPISODES} ; do
 
     PUBEPOCH=$(date -d "${PUBDATE}" +%s)
 
-    if [ ${PUBEPOCH} -ge ${S04} ] ; then
-      if [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
+    if [ ${PUBEPOCH} -ge ${S05} ] ; then
+      if [ "${PUBEPOCH}" -ge ${S05} ] ; then SEASON="05"
+      elif [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
       elif [ "${PUBEPOCH}" -ge ${S03} ] ; then SEASON="03"
       elif [ "${PUBEPOCH}" -ge ${S02} ] ; then SEASON="02"
       elif [ "${PUBEPOCH}" -lt ${S02} ] ; then SEASON="01"
