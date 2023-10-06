@@ -314,11 +314,12 @@ function CurlFeed() {
   # | //item/*[name()="itunes:summary"]
 
   EPISODES="$(curl -sL ${URL_RSS} | tidy -xml -w 100000 -q - \
-    | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
+    | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/*[@medium="audio"] | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
     | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
     | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' \
     | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
     | sed 's/^url="\?\(.*mp3\).*/EPURL="\1"/' \
+    | sed 's/.*media:content.*url=\(.*\)\/>$/MEDIA="\1"/' \
     | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' \
     | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
     | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' \
@@ -349,5 +350,5 @@ function DumpFound() {
 
 function UnsetThese() {
   # unset EPURL PUBDATE PUBEPOCH OLD OUTFILE TITLE TRACK IMAGE PODCAST_ALBUM_ART
-  unset EPURL IMAGE EPISODE NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE SEASON TITLE TRACK TYPE
+  unset EPURL IMAGE EPISODE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE SEASON TITLE TRACK TYPE
 }
