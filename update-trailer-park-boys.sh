@@ -32,7 +32,7 @@ for LINE in ${EPISODES} ; do
 
   eval "${LINE}"
 
-  if [ "${PUBDATE}" -a "${TITLE}" -a "${EPURL}" -a "${IMAGE}" ] ; then
+  if [ "${PUBDATE}" -a "${TITLE}" -a "${EPURL}" -a "${TYPE}" ] ; then
 
     PUBEPOCH=$(date -d "${PUBDATE}" +%s)
 
