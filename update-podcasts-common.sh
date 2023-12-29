@@ -339,6 +339,7 @@ function DumpFound() {
   [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
   [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
   [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
+  [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
   [ "${TITLE}" ] && echo -e "\\tTITLE: ${TITLE}"
   [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
