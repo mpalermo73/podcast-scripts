@@ -338,6 +338,7 @@ function DumpFound() {
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
   [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
+  [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
   [ "${TITLE}" ] && echo -e "\\tTITLE: ${TITLE}"
   [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
@@ -350,5 +351,5 @@ function DumpFound() {
 
 function UnsetThese() {
   # unset EPURL PUBDATE PUBEPOCH OLD OUTFILE TITLE TRACK IMAGE PODCAST_ALBUM_ART
-  unset EPURL IMAGE EPISODE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE SEASON TITLE TRACK TYPE
+  unset EPURL IMAGE EPISODE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE PART SEASON TITLE TRACK TYPE
 }
