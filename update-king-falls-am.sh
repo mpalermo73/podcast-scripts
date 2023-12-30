@@ -25,7 +25,7 @@ for LINE in ${EPISODES} ; do
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
       WORD_NUMS="$(echo ${TITLE,,} | sed 's/episode \(.*[a-z]\+\): .*/\1/')"
-      TITLE="$(echo $TITLE | sed "s/\([eE]pisode \).*[a-z]\+:\(.*\)/$($HOME/GIT/podcast-scripts/words_to_numbers.py ${WORD_NUMS}) -\2/")"
+      TITLE="$(echo $TITLE | sed "s/\([eE]pisode \).*[a-z]\+:\(.*\)/$($HOME/GIT/podcast-scripts/w2n.pl ${WORD_NUMS}) -\2/")"
 
       DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
 

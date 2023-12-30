@@ -25,7 +25,7 @@ for LINE in ${EPISODES} ; do
       WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pisode \(.*\):.*/\1/')
 
       if [[ ! "${WORD_NUMS}" =~ [0-9] ]] ; then
-        EPISODE=$($HOME/GIT/podcast-scripts/words_to_numbers.py "${WORD_NUMS}")
+        EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl "${WORD_NUMS}")
       else
         EPISODE=${WORD_NUMS}
       fi
