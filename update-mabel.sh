@@ -22,7 +22,9 @@ for LINE in ${EPISODES} ; do
     # if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pisode \(.*\):.*/\1/')
+      TITLE=$(echo "${TITLE}" | sed 's/[()]//g')
+
+      WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pis.de \(.*\):.*/\1/')
 
       if [[ ! "${WORD_NUMS}" =~ [0-9] ]] ; then
         EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl "${WORD_NUMS}")
