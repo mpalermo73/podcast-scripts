@@ -24,15 +24,20 @@ for LINE in ${EPISODES} ; do
 
       TITLE=$(echo "${TITLE}" | sed 's/[()]//g')
 
-      WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pis.de \(.*\):.*/\1/')
+      EPISODE=$(basename ${EPURL} | sed 's/.*[eE][pP][iI][sS][oO][dD][eE]_\([0-9]\+\).*/\1/ ; s/.*[mM][aA][bB][eE][lL]_\([0-9]\+\).*/\1/ ; s/.*[eE][pP][iI][sS][oO][dD][eE]_\([a-zA-Z]\+\).*/\1/')
 
-      if [[ ! "${WORD_NUMS}" =~ [0-9] ]] ; then
-        EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl "${WORD_NUMS}")
-      else
-        EPISODE=${WORD_NUMS}
-      fi
+      EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl ${EPISODE})
 
-      [ ${#EPISODE} -eq 1 ] && EPISODE="0${EPISODE}"
+      # WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pis.de \(.*\):.*/\1/')
+
+      # if [[ ! "${WORD_NUMS}" =~ [0-9] ]] ; then
+      #   EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl "${WORD_NUMS}")
+      # else
+      #   EPISODE=${WORD_NUMS}
+      # fi
+
+      [ ${#EPISODE} -eq 1 ] && EPISODE="00${EPISODE}"
+      [ ${#EPISODE} -eq 2 ] && EPISODE="0${EPISODE}"
 
       TITLE="${EPISODE} - $(echo ${TITLE} | sed 's/^.*: //')"
 
