@@ -309,9 +309,11 @@ function ProcessEpisode() {
 
 function CurlFeed() {
 
-  # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
-  # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
   # | //item/*[name()="itunes:summary"]
+    # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
+    # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
+    # | sed 's/.*media:content.*url=\(.*\)\/>$/MEDIA="\1"/' \
+    # | sed 's/<description>\(.*\)<\/description>/DESCRIPTION="\1"/' \
 
   EPISODES="$(curl -sL ${URL_RSS} | tidy -xml -w 100000 -q - \
     | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/*[@medium="audio"] | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
@@ -319,11 +321,10 @@ function CurlFeed() {
     | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' \
     | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
     | sed 's/^url="\?\(.*mp3\).*/EPURL="\1"/' \
-    | sed 's/.*media:content.*url=\(.*\)\/>$/MEDIA="\1"/' \
     | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' \
     | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
     | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' \
-    | sed 's/.*itunes:image href="\?\(.*\)"\?\/>.*/IMAGE="\1"/')"
+    | sed 's/.*itunes:image href="\(.*jpg\|png\|bmp\).*/IMAGE="\1"/')"
 }
 
 
