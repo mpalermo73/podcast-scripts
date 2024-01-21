@@ -81,7 +81,7 @@ function GetPodcastImage() {
     unset TMP_ART
 
   elif [ ! -f "${PODCAST_ALBUM_ART}" ]; then
-    echo -e "IMAGE is not set and ${PODCAST_ALBUM_ART} doesn't exist"
+    echo -e "IMAGE var is not set and \"${PODCAST_ALBUM_ART}\" not found"
     echo -e "Can't tag ${TANK}/${OUTFILE}"
     exit 1
   fi
@@ -241,7 +241,6 @@ function ProcessEpisode() {
 
   if [ ${DO_RETAG} ] ; then
 
-
     for MTANK in ${TANK_MEDIA} ${TANK_SYNCTHING} ; do
       if [ -f "${TANK}/$(basename "${OUTFILE}")" ] ; then
         echo "RETAGGING ${TANK}/$(basename "${OUTFILE}")"
@@ -252,32 +251,22 @@ function ProcessEpisode() {
 
   else
 
-    # if [ ${PUBEPOCH} -ge $(date -d "${DATE_MIN}" +%s) ] ; then
+    if [ ! -f "${TANK}/${OUTFILE}" ] ; then
+      [ ${DEBUG} ] && echo "NEED: ${OUTFILE}"
 
-      if [ ! -f "${TANK}/${OUTFILE}" ] ; then
+      GetEpisode "${TRACK}" "${TITLE}" "${OUTFILE}" "${PUBDATE}" "${EPURL}"
+      EpisodeTagging
+      CopyEpisode "${TANK}/${OUTFILE}"
+      [ ! ${NO_SLACK} ] && AnnounceEpisode
 
-        [ ${DEBUG} ] && echo "NEED: ${OUTFILE}"
+    else [ -f "${TANK}/${OUTFILE}" ]
+      [ ${DEBUG} ] && echo "HAVE: ${OUTFILE}"
 
-        # NEW_EPISODE=TRUE
+      touch -d "$(date -d "${PUBDATE}" +%Y-%m-%d)" "${TANK}/${OUTFILE}"
+      CopyEpisode "${TANK}/${OUTFILE}"
+    fi
 
-        GetEpisode "${TRACK}" "${TITLE}" "${OUTFILE}" "${PUBDATE}" "${EPURL}"
-        EpisodeTagging
-        CopyEpisode "${TANK}/${OUTFILE}"
-        [ ! ${NO_SLACK} ] && AnnounceEpisode
-
-      elif [ -f "${TANK}/${OUTFILE}" ] ; then
-        [ ${DEBUG} ] && echo "HAVE: ${OUTFILE}"
-        touch -d "$(date -d "${PUBDATE}" +%Y-%m-%d)" "${TANK}/${OUTFILE}"
-        CopyEpisode "${TANK}/${OUTFILE}"
-      else
-        [ ${DEBUG} ] && echo "DUNNO: ${PUBDATE} || ${EPURL} || ${#SUMMARY}"
-      fi
-
-      UnsetThese
-
-    # else
-    #   [ ${DEBUG} ] && echo "$(date -d @${PUBEPOCH} "+%b %d, %Y") is older than ${DATE_MIN}.  Skipping..."
-    # fi
+    UnsetThese
   fi
 
   UnsetThese
@@ -304,10 +293,6 @@ function GetItem() {
   | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
   | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/TRACK="\1"/' \
   | sed 's/.*itunes:image href=\(.*\.[a-zA-Z]\{3\}\).*/IMAGE="\1"/'
-
-  # | sed 's/.*itunes:image href=\(.*\)?.*/IMAGE="\1"/'
-
-  # | sed 's/.*itunes:image href=\(.*jpg\|png\|bmp\).*/IMAGE="\1"/'
 }
 
 
@@ -320,6 +305,7 @@ function DumpFound() {
   [ "${IMAGE}" ] && echo -e "\\tIMAGE: ${IMAGE}"
   [ "${OUTFILE}" ] && echo -e "\\tOUTFILE: ${OUTFILE}"
   [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
+  [ "${PODCAST_ALBUM_ART}" ] && echo -e "\\PODCAST_ALBUM_ART: ${PODCAST_ALBUM_ART}"
   [ "${PRETTY_NAME}" ] && echo -e "\\tPRETTY_NAME: ${PRETTY_NAME}"
   [ "${PUBDATE}" ] && echo -e "\\tPUBDATE: ${PUBDATE}"
   [ "${PUBEPOCH}" ] && echo -e "\\tPUBEPOCH: ${PUBEPOCH}"
@@ -330,7 +316,6 @@ function DumpFound() {
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
 }
-
 
 
 function UnsetThese() {
