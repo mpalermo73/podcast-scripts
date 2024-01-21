@@ -102,7 +102,8 @@ function CopyEpisode() {
 
     case ${MTANK} in
       ${TANK_SYNCTHING})
-        if [ ${UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] ; then
+        # if [ ${UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] ; then
+        if [ ${UPDATE_SYNCTHING} ] ; then
           [ ! "$(mount | grep ${MOUNT_SYNCTHING})" ] && mount ${MOUNT_SYNCTHING}
           [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
           [ ${DEBUG} ] && [ -f "${MTANK}/$(basename "$1")" ] && echo "EXISTS - ${MTANK}/$(basename "$1")"
@@ -127,29 +128,6 @@ function CopyEpisode() {
         ;;
     esac
   done
-
-
-
-  # for MOUNT in ${MOUNT_MEDIA} ${MOUNT_SYNCTHING} ; do
-  #   if [ ! ${UPDATE_SYNCTHING} ] && [ "${MOUNT}" == "${MOUNT_SYNCTHING}" ] ; then
-  #     [ ${DEBUG} ] && echo "SKIPPING MOUNT ${MOUNT}"
-  #   else
-  #     [ ${DEBUG} ] && echo "MOUNTING ${MOUNT}"
-  #     [ ! "$(mount | grep ${MOUNT})" ] && mount ${MOUNT}
-  #   fi
-  # done
-  #
-  # for MTANK in ${TANK_MEDIA} ${TANK_SYNCTHING} ; do
-  #   if [ ! ${UPDATE_SYNCTHING} ] && [ ! ${NEW_EPISODE} ] && [ ${MTANK} == ${TANK_SYNCTHING} ] ; then
-  #     [ ${DEBUG} ] && echo "SKIPPING UPDATE ${MTANK}"
-  #   else
-  #     [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
-  #     [ ${DEBUG} ] && [ -f "${MTANK}/$(basename "$1")" ] && echo "EXISTS - ${MTANK}/$(basename "$1")"
-  #     [ ${DEBUG} ] && [ ! -f "${MTANK}/$(basename "$1")" ] && echo "COPYING $(basename "$1") --> ${MTANK}"
-  #     [ ! -d "${MTANK}" ] && mkdir -p "${MTANK}"
-  #     [ ! -f "${MTANK}/$(basename "$1")" ] && cp -a "$1" "${MTANK}/$(basename "$1")"
-  #   fi
-  # done
 }
 
 
@@ -207,7 +185,8 @@ function AnnounceEpisode() {
   [ ! "${IMAGE}" ] && OUTPUT="New Episode!\n"
   [ "${IMAGE}" ] && OUTPUT="<${IMAGE}|${PRETTY_NAME}>\n"
   OUTPUT+="<${FILEURL}|${TITLE}>\n"
-  [ ${UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] && OUTPUT+="Copied to Syncthing"
+  # [ ${UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] && OUTPUT+="Copied to Syncthing"
+  [ ${UPDATE_SYNCTHING} ] && OUTPUT+="Copied to Syncthing"
 
   [ ${DEBUG} ] && echo PAYLOAD: \"$(echo ${OUTPUT} | sed 's/\\n/\n/g')\"
 
@@ -279,7 +258,7 @@ function ProcessEpisode() {
 
         [ ${DEBUG} ] && echo "NEED: ${OUTFILE}"
 
-        NEW_EPISODE=TRUE
+        # NEW_EPISODE=TRUE
 
         GetEpisode "${TRACK}" "${TITLE}" "${OUTFILE}" "${PUBDATE}" "${EPURL}"
         EpisodeTagging
