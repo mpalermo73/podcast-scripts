@@ -226,6 +226,7 @@ function DisectInfo() {
   TRACK=$4
 
   [ ! "${TRACK}" ] && TRACK=$(date -d "${PUBDATE}" +%y%m%d)
+  [ ! "${TITLE}" ] && TITLE="${RAW_TITLE}"
 
   if [[ "${TRACK}" =~ ^[0-9]+$ ]] ; then
 
@@ -235,7 +236,9 @@ function DisectInfo() {
     [[ ${#TRACK} -le 3 ]] && TRACK=$(printf "%03d\\n" ${TRACK})
 
     OUTFILE="${TRACK} - ${TITLE}.mp3"
-    OUTFILE=$(echo "${OUTFILE}" | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')
+    # OUTFILE=$(echo "${OUTFILE}" | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')
+    OUTFILE=$(echo "${OUTFILE}" | sed 's/[&#*?!]//g')
+
     PUBEPOCH="$(date -d "${PUBDATE}" +%s)"
 
     [ ${DEBUG} ] && DumpFound
