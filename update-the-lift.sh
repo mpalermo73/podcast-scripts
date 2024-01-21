@@ -25,8 +25,6 @@ for LINE in ${EPISODES} ; do
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      PRETITLE=${TITLE}
-
       SEASON=$(echo ${TITLE} | sed 's/[sS]\([0-9]\+\)[eE][0-9]\+.*/\1/')
       EPISODE=$(echo ${TITLE} | sed 's/[sS][0-9]\+[eE]\([0-9]\+\).*/\1/')
 

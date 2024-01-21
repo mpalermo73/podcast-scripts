@@ -335,26 +335,25 @@ function GetItem() {
 
 function DumpFound() {
   echo "FOUND ALL:"
-  [ "${PRETTY_NAME}" ] && echo -e "\\tPRETTY_NAME: ${PRETTY_NAME}"
+  [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
+  [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${GENERIC_NAME}" ] && echo -e "\\tGENERIC_NAME: ${GENERIC_NAME}"
+  [ "${IMAGE}" ] && echo -e "\\tIMAGE: ${IMAGE}"
+  [ "${OUTFILE}" ] && echo -e "\\tOUTFILE: ${OUTFILE}"
+  [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
+  [ "${PRETTY_NAME}" ] && echo -e "\\tPRETTY_NAME: ${PRETTY_NAME}"
   [ "${PUBDATE}" ] && echo -e "\\tPUBDATE: ${PUBDATE}"
   [ "${PUBEPOCH}" ] && echo -e "\\tPUBEPOCH: ${PUBEPOCH}"
-  [ "${PRETITLE}" ] && echo -e "\\tPRETITLE: ${PRETITLE}"
-  [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
-  [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
-  [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
-  [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
   [ "${RAW_TITLE}" ] && echo -e "\\tRAW_TITLE: ${RAW_TITLE}"
+  [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
   [ "${TITLE}" ] && echo -e "\\tTITLE: ${TITLE}"
-  [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
-  [ "${OUTFILE}" ] && echo -e "\\tOUTFILE: ${OUTFILE}"
-  [ "${IMAGE}" ] && echo -e "\\tIMAGE: ${IMAGE}"
-  [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
+  [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
+  [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
 }
 
 
 
 function UnsetThese() {
-  unset EPURL IMAGE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE PART SEASON TITLE TRACK TYPE
+  unset EPURL IMAGE MEDIA NEW_EPISODE OLD OUTFILE PART PUBDATE PUBEPOCH SEASON TITLE TRACK TYPE
 }

@@ -23,14 +23,13 @@ for LINE in ${EPISODES} ; do
 
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [[ "${TYPE,,}" == full ]]; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
-      PRETITLE=${TITLE}
 
       [ ! ${EPISODE} ] && EPISODE=$(echo ${TITLE} | awk '{print $1}')
 
       [ ${#EPISODE} -eq 1 ] && EPISODE="00${EPISODE}"
       [ ${#EPISODE} -eq 2 ] && EPISODE="0${EPISODE}"
 
-      TITLE="$(echo ${PRETITLE} | sed 's/^[0-9]\+.\?[–-]\?.\?\([A-Z].*\)/\1/g')"
+      TITLE="$(echo ${TITLE} | sed 's/^[0-9]\+.\?[–-]\?.\?\([A-Z].*\)/\1/g')"
 
       TITLE="${EPISODE} - ${TITLE}"
 

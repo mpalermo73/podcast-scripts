@@ -24,7 +24,6 @@ for LINE in ${EPISODES} ; do
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [[ ! "${TITLE}" =~ [rR][eE][iI][sS][sS][uU][eE] ]]; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      # PRETITLE=$(echo "${TITLE}" | cut -d '-' -f $(( ${#TITLE//[^-]} + 1 )))
       DASHCOUNT=$(echo ${TITLE//[^-]} | wc -c)
 
       TITLE="$(date -d "${PUBDATE}" +%y%m%d) - $(echo "${TITLE}" | cut -d '-' -f ${DASHCOUNT} | awk '{$1=$1};1')"

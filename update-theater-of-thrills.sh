@@ -25,7 +25,6 @@ for LINE in ${EPISODES} ; do
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      PRETITLE=${TITLE}
       TITLE="$(date -d "${PUBDATE}" +%y%m%d) - ${TITLE}"
       TITLE="$(echo ${TITLE} | sed 's/\//-/;s/^[ \t]\+//g;s/[ \t]\+$//g')"
 

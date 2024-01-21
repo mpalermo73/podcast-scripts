@@ -25,12 +25,10 @@ for LINE in ${EPISODES} ; do
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [ "${TYPE}" == "full" ] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      PRETITLE=${TITLE}
-
       [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
       [ ${#EPISODE} -eq 1 ] && EPISODE="0${EPISODE}"
 
-      TITLE="${SEASON}${EPISODE} - $(echo ${PRETITLE} | sed 's/Episode [0-9]\+ - \(.*\)/\1/')"
+      TITLE="${SEASON}${EPISODE} - $(echo ${TITLE} | sed 's/Episode [0-9]\+ - \(.*\)/\1/')"
 
       DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
 

@@ -25,9 +25,7 @@ for LINE in ${EPISODES} ; do
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-      PRETITLE=${TITLE}
-
-      eval $(echo "${PRETITLE}" | sed 's/Episode \([0-9]\+\): \+.\(.*\)./EPISODE="\1"\nTITLE="\1 - \2"/')
+      eval $(echo "${TITLE}" | sed 's/Episode \([0-9]\+\): \+.\(.*\)./EPISODE="\1"\nTITLE="\1 - \2"/')
 
       DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
 

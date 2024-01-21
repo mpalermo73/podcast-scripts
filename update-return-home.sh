@@ -24,11 +24,10 @@ for LINE in ${EPISODES} ; do
 
     if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [[ ! "${TITLE}" =~ Remastered ]]; then
       [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
-      PRETITLE=${TITLE}
 
       EPISODE=$(date -d "${PUBDATE}" +%y%m%d)
 
-      TITLE="${EPISODE} - $(echo "${PRETITLE}" | sed 's/^Ep.* - //')"
+      TITLE="${EPISODE} - $(echo "${TITLE}" | sed 's/^Ep.* - //')"
 
       DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
 
