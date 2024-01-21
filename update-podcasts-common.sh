@@ -38,31 +38,33 @@ function GetPodcastImage() {
 
   if [ "${IMAGE}" ] ; then
 
-    TMP_ART="${PODCAST_ALBUM_ART}.tmp"
+    curl -sL "${IMAGE}" | convert -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K - "${PODCAST_ALBUM_ART}"
 
-    wget ${WGET_DEBUG} "${IMAGE}" -O "${TMP_ART}"
+    # TMP_ART="${PODCAST_ALBUM_ART}.tmp"
 
-    eval "$(/usr/bin/vendor_perl/exiftool -q -f "${TMP_ART}" \
-      -p 'IMAGE_WIDTH="$imageWidth"' \
-      -p 'IMAGE_HEIGHT="$imageHeight"')"
+    # wget ${WGET_DEBUG} "${IMAGE}" -O "${TMP_ART}"
 
-    if [ ${DEBUG} ] ; then
-      echo -e "\\tIMAGE_WIDTH: \"${IMAGE_WIDTH}\""
-      echo -e "\\tIMAGE_HEIGHT: \"${IMAGE_HEIGHT}\""
-    fi
+    # eval "$(/usr/bin/vendor_perl/exiftool -q -f "${TMP_ART}" \
+    #   -p 'IMAGE_WIDTH="$imageWidth"' \
+    #   -p 'IMAGE_HEIGHT="$imageHeight"')"
 
-    PODCAST_ALBUM_ART="/tmp/${PRETTY_NAME}.jpg"
+    # if [ ${DEBUG} ] ; then
+    #   echo -e "\\tIMAGE_WIDTH: \"${IMAGE_WIDTH}\""
+    #   echo -e "\\tIMAGE_HEIGHT: \"${IMAGE_HEIGHT}\""
+    # fi
 
-    convert -resize ${MAX_DIMENSION}x${MAX_DIMENSION}! -quality ${QUALITY} "${TMP_ART}" "${PODCAST_ALBUM_ART}"
+    # PODCAST_ALBUM_ART="/tmp/${PRETTY_NAME}.jpg"
 
-    while [ $(ls -sk "${PODCAST_ALBUM_ART}" | awk '{print $1}') -gt ${MAX_SIZE} ] ; do
-      convert -resize ${MAX_DIMENSION}x${MAX_DIMENSION}! -quality ${QUALITY} "${TMP_ART}" "${PODCAST_ALBUM_ART}"
-      QUALITY=$(( ${QUALITY} - 1))
-    done
+    # convert -resize ${MAX_DIMENSION}x${MAX_DIMENSION}! -quality ${QUALITY} "${TMP_ART}" "${PODCAST_ALBUM_ART}"
 
-    [ -f "${TMP_ART}" ] && rm -f "${TMP_ART}"
+    # while [ $(ls -sk "${PODCAST_ALBUM_ART}" | awk '{print $1}') -gt ${MAX_SIZE} ] ; do
+    #   convert -resize ${MAX_DIMENSION}x${MAX_DIMENSION}! -quality ${QUALITY} "${TMP_ART}" "${PODCAST_ALBUM_ART}"
+    #   QUALITY=$(( ${QUALITY} - 1))
+    # done
 
-    unset TMP_ART
+    # [ -f "${TMP_ART}" ] && rm -f "${TMP_ART}"
+
+    # unset TMP_ART
 
   elif [ ! -f "${PODCAST_ALBUM_ART}" ]; then
     echo -e "IMAGE var is not set and \"${PODCAST_ALBUM_ART}\" not found"
