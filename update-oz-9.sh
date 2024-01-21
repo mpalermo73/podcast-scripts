@@ -3,38 +3,34 @@
 URL_RSS="https://oz9podcast.libsyn.com/rss"
 PRETTY_NAME="Oz 9"
 GOOD_REGEX="^[eE]pisode.*$"
-HERE=$(dirname $0)
 
 # DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=true
+# NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
-CurlFeed
+WriteFeed
 
-for LINE in ${EPISODES} ; do
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
-  eval "${LINE}"
+  eval $(GetItem ${ITEM})
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" ] ; then
-    if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
+  if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
-      eval $(echo ${TITLE} | sed 's/episode \([a-zA-Z]\+-\{0,1\}[a-zA-Z]\+\).*: \+\(.*\)/EPISODE=\"\1\"\nTITLE=\"\2\"/')
+    [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-      EPISODE=$(printf "%03d\\n" $(${HERE}/w2n.pl "${EPISODE}"))
+    eval $(echo ${RAW_TITLE} | sed 's/episode \([a-zA-Z]\+-\{0,1\}[a-zA-Z]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/')
 
-      TITLE="${EPISODE} - $(echo ${TITLE} | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')"
+    TRACK=$(${HERE}/w2n.pl "${TRACK}")
 
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
+    DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
-    else
-      [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
-    fi
     UnsetThese
-  fi
 
+  else
+    [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
+  fi
 done
