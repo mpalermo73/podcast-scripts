@@ -8,45 +8,29 @@ GOOD_REGEX="^[eE]pisode.*:"
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 UPDATE_SYNCTHING=TRUE
-
+# NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
-CurlFeed
+WriteFeed
 
-for LINE in ${EPISODES} ; do
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
-  eval "${LINE}"
+  eval $(GetItem ${ITEM})
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" ] ; then
-    # if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
+  if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
-      TITLE=$(echo "${TITLE}" | sed 's/[()]//g')
+    [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-      EPISODE=$(basename ${EPURL} | sed 's/.*[eE][pP][iI][sS][oO][dD][eE]_\([0-9]\+\).*/\1/ ; s/.*[mM][aA][bB][eE][lL]_\([0-9]\+\).*/\1/ ; s/.*[eE][pP][iI][sS][oO][dD][eE]_\([a-zA-Z]\+\).*/\1/')
+    TITLE=$(echo "${RAW_TITLE}" | sed 's/.*: \+\(.*\)/\1/')
 
-      EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl ${EPISODE})
+    TRACK=$(${HERE}/w2n.pl $(echo "${RAW_TITLE}" | sed 's/.*Epis[io]de \+\(.*\):.*/\1/ ; s/Four Point Five/4/'))
 
-      # WORD_NUMS=$(echo ${TITLE} | sed 's/^.*[eE]pis.de \(.*\):.*/\1/')
+    DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
-      # if [[ ! "${WORD_NUMS}" =~ [0-9] ]] ; then
-      #   EPISODE=$($HOME/GIT/podcast-scripts/w2n.pl "${WORD_NUMS}")
-      # else
-      #   EPISODE=${WORD_NUMS}
-      # fi
-
-      [ ${#EPISODE} -eq 1 ] && EPISODE="00${EPISODE}"
-      [ ${#EPISODE} -eq 2 ] && EPISODE="0${EPISODE}"
-
-      TITLE="${EPISODE} - $(echo ${TITLE} | sed 's/^.*: //')"
-
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
-
-    # else
-    #   [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
-    # fi
     UnsetThese
-  fi
 
+  else
+    [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
+  fi
 done

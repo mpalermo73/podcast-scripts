@@ -9,6 +9,7 @@ IFS=$'\n'
 GENERIC_NAME=$(echo "${PRETTY_NAME}" | sed 's/[ \t,]\+//g')
 [ ! "${GENRE}" ] && GENRE="Podcast"
 
+HERE=$(dirname $0)
 MOUNT_MEDIA="/mnt/MEDIA"
 TANK_MEDIA="${MOUNT_MEDIA}/MUSIC/Podcasts/${PRETTY_NAME}"
 
@@ -21,6 +22,7 @@ QUALITY=100
 MAX_DIMENSION="1000"
 MAX_SIZE="1024"
 
+ITEM_COUNT="${ITEM_COUNT:-0}"
 
 [ ! ${DEBUG} ] && WGET_DEBUG="--quiet"
 [ ! "${DATE_MIN}" ] && DATE_MIN="Jun 30, 1908"
@@ -216,29 +218,24 @@ function AnnounceEpisode() {
 
 function DisectInfo() {
 
-  [ ${DEBUG} ] && echo "DisectInfo \"${PUBDATE}\" \"${EPURL}\" \"${TITLE}\""
+  [ ${DEBUG} ] && echo "DisectInfo \"${PUBDATE}\" \"${EPURL}\" \"${TITLE}\" \"${TRACK}\""
 
   PUBDATE=$1
   EPURL=$2
   TITLE=$3
+  TRACK=$4
 
-  [ ! "${EPISODE}" ] && EPISODE=$(date -d "${PUBDATE}" +%y%m%d)
-
-  [ "${IMAGE}" ] && IMAGE="$(echo "${IMAGE}" | sed 's/\(.*\)?.*/\1/')"
-
-  TRACK="$(echo ${TITLE} | awk '{print $1}' | sed 's/\([0-9]\+\).*/\1/')"
-  [ ${#TRACK} -eq 1 ] && TRACK="00${TRACK}"
-  [ ${#TRACK} -eq 2 ] && TRACK="0${TRACK}"
-
+  [ ! "${TRACK}" ] && TRACK=$(date -d "${PUBDATE}" +%y%m%d)
 
   if [[ "${TRACK}" =~ ^[0-9]+$ ]] ; then
 
     [ ${DEBUG} ] && echo "TRACK IS ONLY NUMBERS: \"$TRACK\""
 
-    TITLE=$(echo "${TITLE}" | cut -d' ' -f3-)
+    TITLE=$(echo ${TITLE} | awk '{$1=$1};1')
+    [[ ${#TRACK} -le 3 ]] && TRACK=$(printf "%03d\\n" ${TRACK})
 
-    OUTFILE="${TRACK} - $(echo ${TITLE} | sed 's/[?!*]/_/g').mp3"
-
+    OUTFILE="${TRACK} - ${TITLE}.mp3"
+    OUTFILE=$(echo "${OUTFILE}" | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')
     PUBEPOCH="$(date -d "${PUBDATE}" +%s)"
 
     [ ${DEBUG} ] && DumpFound
@@ -307,24 +304,28 @@ function ProcessEpisode() {
 
 
 
-function CurlFeed() {
+function WriteFeed() {
+  curl -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
+  ITEM_COUNT=$(xmllint --format --xpath "count(//item)" "/tmp/${GENERIC_NAME}.xml")
+}
 
-  # | //item/*[name()="itunes:summary"]
-    # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
-    # | sed 's/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/' \
-    # | sed 's/.*media:content.*url=\(.*\)\/>$/MEDIA="\1"/' \
-    # | sed 's/<description>\(.*\)<\/description>/DESCRIPTION="\1"/' \
 
-  EPISODES="$(curl -sL ${URL_RSS} | tidy -xml -w 100000 -q - \
-    | xmllint --format --nsclean --xpath '//item/title[text()] | //item/*[name()="enclosure"]/@url | //item/*[@medium="audio"] | //item/pubDate[text()] | //item/*[name()="itunes:image"] | //item/*[name()="itunes:episodeType"] | //item/*[name()="itunes:season"] | //item/*[name()="itunes:episode"]' - \
-    | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
-    | sed 's/<title>\(.*\)<\/title>/TITLE="\1"/' \
-    | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
-    | sed 's/^url="\?\(.*mp3\).*/EPURL="\1"/' \
-    | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' \
-    | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
-    | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/EPISODE="\1"/' \
-    | sed 's/.*itunes:image href="\(.*jpg\|png\|bmp\).*/IMAGE="\1"/')"
+function GetItem() {
+  xmllint --xpath "//item[$1]/title | //item[$1]/enclosure/@url | //item[$1]/pubDate | //item[$1]/*[name()='itunes:image'] | //item[$1]/*[name()='itunes:episodeType'] | //item[$1]/*[name()='itunes:season'] | //item/*[@medium='audio']" "/tmp/${GENERIC_NAME}.xml" \
+  | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
+  | sed 's/<title>\(.*\)<\/title>/RAW_TITLE="\1"/' \
+  | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
+  | sed 's/<description>\(.*\)<\/description>/DESCRIPTION="\1"/' \
+  | sed 's/^url="\?\(.*mp3\).*/EPURL="\1"/' \
+  | sed 's/.*media:content.*url=\(.*\)\/>$/MEDIA="\1"/' \
+  | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' \
+  | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
+  | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/TRACK="\1"/' \
+  | sed 's/.*itunes:image href=\(.*\.[a-zA-Z]\{3\}\).*/IMAGE="\1"/'
+
+  # | sed 's/.*itunes:image href=\(.*\)?.*/IMAGE="\1"/'
+
+  # | sed 's/.*itunes:image href=\(.*jpg\|png\|bmp\).*/IMAGE="\1"/'
 }
 
 
@@ -338,9 +339,9 @@ function DumpFound() {
   [ "${PRETITLE}" ] && echo -e "\\tPRETITLE: ${PRETITLE}"
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${SEASON}" ] && echo -e "\\tSEASON: ${SEASON}"
-  [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
   [ "${PART}" ] && echo -e "\\tDO_RETAG: ${PART}"
   [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
+  [ "${RAW_TITLE}" ] && echo -e "\\tRAW_TITLE: ${RAW_TITLE}"
   [ "${TITLE}" ] && echo -e "\\tTITLE: ${TITLE}"
   [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
@@ -352,6 +353,5 @@ function DumpFound() {
 
 
 function UnsetThese() {
-  # unset EPURL PUBDATE PUBEPOCH OLD OUTFILE TITLE TRACK IMAGE PODCAST_ALBUM_ART
-  unset EPURL IMAGE EPISODE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE PART SEASON TITLE TRACK TYPE
+  unset EPURL IMAGE MEDIA NEW_EPISODE PRETITLE PUBDATE PUBEPOCH OLD OUTFILE PART SEASON TITLE TRACK TYPE
 }

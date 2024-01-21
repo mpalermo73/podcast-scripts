@@ -3,18 +3,12 @@
 URL_RSS="https://tpbpodcast.libsyn.com/rss"
 PRETTY_NAME="Trailer Park Boys"
 # GOOD_REGEX="^[0-9].*$"
-# DATE_MIN="Jan 1, 2020"
 
-
-
-# DEBUG=TRUE
+DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 UPDATE_SYNCTHING=TRUE
-
-source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
-
-CurlFeed
+# NO_UPDATE_REMOTE=TRUE
 
 # Season Starts
 # S01: April 5 2019 7:00AM UTC - 1554436800
@@ -28,42 +22,61 @@ S04="1653883200"
 # S05: May 29 12:00:00
 S05="1685332800"
 
-for LINE in ${EPISODES} ; do
+source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
-  eval "${LINE}"
+WriteFeed
 
-  if [ "${PUBDATE}" -a "${TITLE}" -a "${EPURL}" -a "${TYPE}" ] ; then
+SEASON=$(printf "%02d\\n" $(curl -sL ${URL_RSS} | xmllint --format --nsclean --xpath '//item/title' - | grep -m1 -i season | sed 's/<title>[sS]eason \([0-9]\+\).*/\1/'))
+
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
+
+  eval $(GetItem ${ITEM})
+
+  [ ${SEASON_SAVE} ] && SEASON=${SEASON_SAVE}
+
+  if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
+
+    [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
     PUBEPOCH=$(date -d "${PUBDATE}" +%s)
 
     if [ ${PUBEPOCH} -ge ${S05} ] ; then
-      if [ "${PUBEPOCH}" -ge ${S05} ] ; then SEASON="05"
-      elif [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
-      elif [ "${PUBEPOCH}" -ge ${S03} ] ; then SEASON="03"
-      elif [ "${PUBEPOCH}" -ge ${S02} ] ; then SEASON="02"
-      elif [ "${PUBEPOCH}" -lt ${S02} ] ; then SEASON="01"
+      # if [ "${PUBEPOCH}" -ge ${S05} ] ; then SEASON="05"
+      # elif [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
+      # elif [ "${PUBEPOCH}" -ge ${S03} ] ; then SEASON="03"
+      # elif [ "${PUBEPOCH}" -ge ${S02} ] ; then SEASON="02"
+      # elif [ "${PUBEPOCH}" -lt ${S02} ] ; then SEASON="01"
+      # else
+      #   echo "CAN'T FIND SEASON: ${PUBEPOCH}"
+      #   echo "${PUBEPOCH} - ${SEASON} - ${TITLE}"
+      #   exit 1
+      # fi
+
+      if [[ "${RAW_TITLE}" =~ ^"TPB in Quarantine" ]] ; then
+        TRACK="${SEASON}"
+        TRACK+="$(printf "%02d\\n" $(( 52 + $(echo "${RAW_TITLE}" | sed 's/.*\([0-9]\)$/\1/') )))"
+        TITLE="$(echo ${RAW_TITLE} | sed 's/\(.*\) - \(.*\)/\1 \2/')"
       else
-        echo "CAN'T FIND SEASON: ${PUBEPOCH}"
-        echo "${PUBEPOCH} - ${SEASON} - ${TITLE}"
-        exit 1
+        TRACK="${SEASON}"
+        TRACK+="$(printf "%02d\\n" $(echo "${RAW_TITLE}" | sed 's/.*Episode \([0-9]\+\).*/\1/'))"
+        TITLE="$(echo ${RAW_TITLE} | sed 's/.*Episode [0-9]\+ - //;s/S[h\*][i\*]t/Shit/g;s/\([fF]\)[u*][c*]k/\1uck/g;s/ÿ/y/g;s/\?\+//g')"
       fi
 
-      if [[ "${TITLE}" =~ ^"TPB in Quarantine" ]] ; then
-        EPISODE=$(( 52 + $(echo "${TITLE}" | sed 's/.*\([0-9]\)$/\1/') ))
-        TITLE="${SEASON}${EPISODE} - $(echo ${TITLE} | sed 's/\(.*\) - \(.*\)/\1 \2/')"
-      else
-        EPISODE="$(echo "${TITLE}" | sed 's/.*Episode \([0-9]\+\).*/\1/')"
-        [ ${#EPISODE} -eq 1 ] && EPISODE="0${EPISODE}"
-        TITLE="$(echo ${TITLE} | sed 's/.*Episode [0-9]\+ - //;s/S[h\*][i\*]t/Shit/g;s/\([fF]\)[u*][c*]k/\1uck/g;s/ÿ/y/g;s/\?\+//g')"
-        TITLE="${SEASON}${EPISODE} - ${TITLE}"
-      fi
+      SEASON_SAVE=${SEASON}
 
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
+      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
+
+      UnsetThese
+
     else
       [ ${DEBUG} ] && echo "TOO OLD: ${PUBDATE} - ${TITLE}"
+      exit
     fi
 
-    UnsetThese
+  # exit
+
+  else
+    [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
   fi
 done
 
