@@ -34,22 +34,6 @@ fi
 
 
 
-function AlbumArtCheck() {
-
-  if [ ! -f "${PODCAST_ALBUM_ART}" -a ! "${IMAGE}" ] ; then
-    echo "MISSING EITHER:"
-    echo "PODCAST ALBUM ART: \"${PODCAST_ALBUM_ART}\""
-    echo "REMOTE IMAGE: \"${IMAGE}\""
-    exit 1
-  else
-    [ "${IMAGE}" ] && PODCAST_ALBUM_ART="/tmp/$(basename "${IMAGE}")"
-    [ "${IMAGE}" ] && [ -f "${PODCAST_ALBUM_ART}" ] && rm -f "${PODCAST_ALBUM_ART}"
-    [ ! "${IMAGE}" ] && PODCAST_ALBUM_ART="${TANK}/${PRETTY_NAME}.jpg"
-  fi
-}
-
-
-
 function GetPodcastImage() {
 
   if [ "${IMAGE}" ] ; then
@@ -236,8 +220,6 @@ function DisectInfo() {
 
 
 function ProcessEpisode() {
-
-  # AlbumArtCheck
 
   if [ ${DO_RETAG} ] ; then
 
