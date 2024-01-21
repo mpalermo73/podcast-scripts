@@ -3,7 +3,6 @@
 URL_RSS="http://feeds.soundcloud.com/users/soundcloud:users:200829781/sounds.rss"
 PRETTY_NAME="Suspense Radio Drama"
 GOOD_REGEX="^Episode [0-9]+: "
-DATE_MIN=$(date -d "- 1 month" "+%b %d, %Y")
 
 
 

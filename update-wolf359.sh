@@ -3,7 +3,6 @@
 URL_RSS="http://wolf359radio.libsyn.com/rss"
 PRETTY_NAME="Wolf 359"
 GOOD_REGEX="^Episode [0-9]+: "
-DATE_MIN=$(date -d "- 100 year" "+%b %d, %Y")
 
 
 

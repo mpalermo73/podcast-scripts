@@ -25,7 +25,7 @@ MAX_SIZE="1024"
 ITEM_COUNT="${ITEM_COUNT:-0}"
 
 [ ! ${DEBUG} ] && WGET_DEBUG="--quiet"
-[ ! "${DATE_MIN}" ] && DATE_MIN="Jun 30, 1908"
+# [ ! "${DATE_MIN}" ] && DATE_MIN=$(date -d "- 100 year" "+%F")
 [ ! -d "${TANK}" ] && mkdir -p "${TANK}"
 
 if [ $# -eq 1 ] && [[ "$1" =~ ^[rR][eE][tT][aA][gG]$ ]] ; then
@@ -273,7 +273,7 @@ function ProcessEpisode() {
 
   else
 
-    if [ ${PUBEPOCH} -ge $(date -d "${DATE_MIN}" +%s) ] ; then
+    # if [ ${PUBEPOCH} -ge $(date -d "${DATE_MIN}" +%s) ] ; then
 
       if [ ! -f "${TANK}/${OUTFILE}" ] ; then
 
@@ -296,9 +296,9 @@ function ProcessEpisode() {
 
       UnsetThese
 
-    else
-      [ ${DEBUG} ] && echo "$(date -d @${PUBEPOCH} "+%b %d, %Y") is older than ${DATE_MIN}.  Skipping..."
-    fi
+    # else
+    #   [ ${DEBUG} ] && echo "$(date -d @${PUBEPOCH} "+%b %d, %Y") is older than ${DATE_MIN}.  Skipping..."
+    # fi
   fi
 
   UnsetThese

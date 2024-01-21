@@ -3,7 +3,6 @@
 URL_RSS="https://rss.art19.com/the-amelia-project"
 PRETTY_NAME="The Amelia Project"
 GOOD_REGEX="^Episode [0-9]+ - "
-DATE_MIN=$(date -d "- 100 year" "+%b %d, %Y")
 
 
 
