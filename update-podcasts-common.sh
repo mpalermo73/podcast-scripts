@@ -38,7 +38,7 @@ function GetPodcastImage() {
 
   if [ "${IMAGE}" ] ; then
 
-    curl -sL "${IMAGE}" | convert -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K - "${PODCAST_ALBUM_ART}"
+    curl -A "${UA}" -sL "${IMAGE}" | convert -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K - "${PODCAST_ALBUM_ART}"
 
   elif [ ! -f "${PODCAST_ALBUM_ART}" ]; then
     echo -e "IMAGE var is not set and \"${PODCAST_ALBUM_ART}\" not found"
@@ -235,7 +235,7 @@ function ProcessEpisode() {
 
 
 function WriteFeed() {
-  curl -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
+  curl -A "${UA}" -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
   ITEM_COUNT=$(xmllint --format --xpath "count(//item)" "/tmp/${GENERIC_NAME}.xml")
 }
 
