@@ -9,31 +9,31 @@ GOOD_REGEX="^[0-9]+.[0-9]+"
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 # UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
-CurlFeed
+WriteFeed
 
-for LINE in ${EPISODES} ; do
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
-  eval "${LINE}"
+  eval $(GetItem ${ITEM})
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${TYPE}" -a "${SEASON}" -a "${EPISODE}" ] ; then
-    if [ "${TYPE}" == "full" ] ; then
+  if [ "${TYPE}" == "full" ] && [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
+    eval $(echo "${RAW_TITLE}" | sed 's/\([0-9]\+\)\.\([0-9]\+\)\ \{0,1\}-\ \{0,1\}\([a-zA-Z0-9].*\)/SEASON="\1"\nTRACK="\2"\nTITLE="\3"/')
 
-      [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
-      [ ${#EPISODE} -eq 1 ] && EPISODE="0${EPISODE}"
+    [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
+    [ ${#TRACK} -eq 1 ] && TRACK="0${TRACK}"
 
-      TITLE="${SEASON}${EPISODE} - $(echo "${TITLE}" | sed 's/.*[-—] \(.*\)/\1/;s/.*[-—]\(.*\)/\1/')"
+    TRACK="${SEASON}${TRACK}"
 
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
-
-    fi
+    DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
     UnsetThese
-  fi
 
+  else
+    [ ${DEBUG} ] && echo "FAIL regex: TYPE: $TYPE || \"${RAW_TITLE}\""
+  fi
 done
