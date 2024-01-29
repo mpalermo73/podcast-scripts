@@ -252,7 +252,7 @@ function GetItem() {
   | sed 's/.*itunes:episodeType>\(.*\)<\/itunes.*/TYPE="\1"/' \
   | sed 's/.*itunes:season>\(.*\)<\/itunes.*/SEASON="\1"/' \
   | sed 's/.*itunes:episode>\(.*\)<\/itunes.*/TRACK="\1"/' \
-  | sed 's/.*itunes:image href=\(.*\.[a-zA-Z]\{3\}\).*/IMAGE="\1"/'
+  | sed 's/.*itunes:image href=\(.*\.[a-zA-Z]\+\).*/IMAGE="\1"/'
 }
 
 
