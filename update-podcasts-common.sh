@@ -63,7 +63,7 @@ function CopyEpisode() {
     case ${MTANK} in
       ${TANK_SYNCTHING})
         if [ ${UPDATE_SYNCTHING} ] ; then
-          [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
+          # [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
           [ ! "$(mount | grep ${MOUNT_SYNCTHING})" ] && mount ${MOUNT_SYNCTHING}
           
           if [ ! -f "${MTANK}/$(basename "$1")" ] ; then
@@ -77,7 +77,7 @@ function CopyEpisode() {
         ;;
       ${TANK_MEDIA})
         if [ ! ${NO_UPDATE_REMOTE} ] ; then
-          [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
+          # [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
           [ ! "$(mount | grep ${MOUNT_MEDIA})" ] && mount ${MOUNT_MEDIA}
 
           if [ ! -f "${MTANK}/$(basename "$1")" ] ; then
