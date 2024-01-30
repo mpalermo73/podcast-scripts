@@ -38,7 +38,12 @@ function GetPodcastImage() {
 
   if [ "${IMAGE}" ] ; then
 
+    PODCAST_ALBUM_ART="/tmp/${PRETTY_NAME}.jpg"
     curl -A "${UA}" -sL "${IMAGE}" | convert -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K - "${PODCAST_ALBUM_ART}"
+    if [ ! -f "${TANK_LOCAL}/.folder.jpg" ] ; then
+      cp -av "${PODCAST_ALBUM_ART}" "${TANK_LOCAL}/.folder.jpg"
+      echo -e "[Desktop Entry]\\nIcon=./.folder.jpg" > "${TANK_LOCAL}/.directory"
+    fi
 
   elif [ ! -f "${PODCAST_ALBUM_ART}" ]; then
     echo -e "IMAGE var is not set and \"${PODCAST_ALBUM_ART}\" not found"
@@ -242,7 +247,10 @@ function WriteFeed() {
 
 
 function GetItem() {
-  xmllint --xpath "//item[$1]/title | //item[$1]/enclosure/@url | //item[$1]/pubDate | //item[$1]/*[name()='itunes:image'] | //item[$1]/*[name()='itunes:episodeType'] | //item[$1]/*[name()='itunes:season'] | //item/*[@medium='audio']" "/tmp/${GENERIC_NAME}.xml" \
+
+  ITEM=$1
+
+  xmllint --xpath "//item[$ITEM]/title | //item[$ITEM]/enclosure/@url | //item[$ITEM]/pubDate | //item[$ITEM]/*[name()='itunes:image'] | //item[$ITEM]/*[name()='itunes:episodeType'] | //item[$ITEM]/*[name()='itunes:episode'] | //item[$ITEM]/*[name()='itunes:season'] | //item/*[@medium='audio']" "/tmp/${GENERIC_NAME}.xml" \
   | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
   | sed 's/<title>\(.*\)<\/title>/RAW_TITLE="\1"/' \
   | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
@@ -260,6 +268,7 @@ function GetItem() {
 function DumpFound() {
   echo "FOUND ALL:"
   [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
+  [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
   [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
   [ "${GENERIC_NAME}" ] && echo -e "\\tGENERIC_NAME: ${GENERIC_NAME}"
   [ "${IMAGE}" ] && echo -e "\\tIMAGE: ${IMAGE}"
