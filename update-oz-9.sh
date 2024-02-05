@@ -22,7 +22,9 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-    eval $(echo ${RAW_TITLE} | sed 's/episode \([a-zA-Z]\+-\{0,1\}[a-zA-Z]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/')
+    eval $(echo "${RAW_TITLE}" | sed 's/episode \([a-zA-Z]\+-\{0,1\}[a-zA-Z]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/')
+
+    [ ! "${TRACK}" -o ! "${TITLE}" ] && eval $(echo "${RAW_TITLE}" | sed 's/episode \([0-9]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/')
 
     TRACK=$(${HERE}/w2n.pl "${TRACK}")
 
