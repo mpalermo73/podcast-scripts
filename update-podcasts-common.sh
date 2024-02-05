@@ -143,6 +143,14 @@ function GetEpisode() {
   FILEURL=${5}
 
   wget ${WGET_DEBUG} "${FILEURL}" -O "${TANK_LOCAL}/${OUTFILE}"
+
+  OUTFILE_SIZE=$(du -s "${TANK_LOCAL}/${OUTFILE}" | cut -f1)
+
+  if [ ${OUTFILE_SIZE} -eq 0 ] ; then
+    [ ${DEBUG} ] && echo "BAD DOWNLOAD: ${OUTFILE_SIZE}. Trying again..."
+    sleep 3
+    wget ${WGET_DEBUG} "${FILEURL}" -O "${TANK_LOCAL}/${OUTFILE}"
+  fi
 }
 
 
