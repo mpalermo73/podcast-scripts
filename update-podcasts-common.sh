@@ -11,7 +11,7 @@ GENERIC_NAME=$(echo "${PRETTY_NAME}" | sed 's/[ \t,]\+//g')
 
 HERE=$(dirname $0)
 MOUNT_MEDIA="/mnt/MEDIA"
-TANK_MEDIA="${MOUNT_MEDIA}/MUSIC/Podcasts/${PRETTY_NAME}"
+TANK_MEDIA="${MOUNT_MEDIA}/Podcasts/${PRETTY_NAME}"
 
 MOUNT_SYNCTHING="/mnt/syncthing"
 TANK_SYNCTHING="${MOUNT_SYNCTHING}/${PRETTY_NAME}"
