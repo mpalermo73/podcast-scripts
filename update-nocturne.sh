@@ -9,7 +9,7 @@ GOOD_REGEX=""
 # DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
-# UPDATE_SYNCTHING=TRUE
+UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
@@ -33,32 +33,4 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
   else
     [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
   fi
-done
-
-exit
-
-CurlFeed
-
-for LINE in ${EPISODES} ; do
-
-  eval "${LINE}"
-
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" ] ; then
-
-    if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [[ ! "${TITLE}" =~ Remastered ]]; then
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
-
-      EPISODE=$(date -d "${PUBDATE}" +%y%m%d)
-
-      TITLE="$(echo "$TITLE" | sed 's/\!//g')"
-      TITLE="${EPISODE} - ${TITLE}"
-
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
-
-    else
-      [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
-    fi
-    UnsetThese
-  fi
-
 done
