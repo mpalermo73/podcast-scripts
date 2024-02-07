@@ -23,7 +23,8 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
     # eval $(echo "${RAW_TITLE}" | sed 's/.*- \(.*\)/TITLE="\1"/')
-    TITLE=$(echo "${RAW_TITLE}" | sed 's/[eE]pisode [0-9]\+\.[0-9]\+ \(.*\)/\1/ ; s/- \(.*\)/\1/')
+    # TITLE=$(echo "${RAW_TITLE}" | sed 's/[eE]pisode [0-9]\+\.[0-9]\+ \(.*\)/\1/ ; s/- \(.*\)/\1/')
+    eval $(echo "${RAW_TITLE}" | sed 's/[eE]pisode [0-9]\+\.[0-9]\+[ -:]\{0,1\}[ -:]\{0,1\} \(.*\)/TITLE="\1"/')
 
     [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
     [ ${#TRACK} -eq 1 ] && TRACK="0${TRACK}"
