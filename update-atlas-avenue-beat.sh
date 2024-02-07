@@ -4,7 +4,7 @@ URL_RSS="https://www.spreaker.com/show/3369253/episodes/feed"
 PRETTY_NAME="Atlas Avenue Beat"
 GOOD_REGEX="^[eE]pisode.*$"
 
-DEBUG=TRUE
+# DEBUG=TRUE
 # JUST_TEST=TRUE
 NO_SLACK=TRUE
 UPDATE_SYNCTHING=TRUE
@@ -18,7 +18,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   eval $(GetItem ${ITEM})
 
-  if [[ ! "${RAW_TITLE}" =~ Recap ]] ; then
+  if [[ ! "${RAW_TITLE}" =~ Recap ]] && [[ ! "${RAW_TITLE}" =~ "A Message from" ]] ; then
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
