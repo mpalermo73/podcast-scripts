@@ -7,7 +7,7 @@ GOOD_REGEX="^[cC]hapter [0-9]+"
 DEBUG=TRUE
 # JUST_TEST=TRUE
 NO_SLACK=TRUE
-UPDATE_SYNCTHING=TRUE
+# UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
