@@ -18,13 +18,11 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   eval $(GetItem ${ITEM})
 
-  if [ "${TYPE}" == "full" ] && [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] && [ "${TRACK}" ]; then
+  if [ "${TYPE}" == "full" ] && [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] && [ "${TRACK}" ] ; then
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
     eval $(echo "${RAW_TITLE}" | sed 's/.*: \“\(.*\)\”.*/TITLE=\"\1\"/')
-
-    echo "THIS: $(echo "${RAW_TITLE}" | sed 's/.*: \“\(.*\)\”.*/TITLE=\"\1\"/')"
 
     [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
     [ ${#TRACK} -eq 1 ] && TRACK="0${TRACK}"
