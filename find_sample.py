@@ -29,13 +29,15 @@ if rate != rate_snippet:
 
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.correlate.html
 # compute the cross-correlation
-#z = signal.correlate(source, snippet, "full", "auto");
-#z = signal.correlate(source, snippet, "valid", "auto");
-z = signal.correlate(source, snippet, "same", "auto");
 
-peak = np.argmax(np.abs(z))
-start = (peak-len(snippet)+1)/rate
-end   = peak/rate
+correlate_modes = ["full", "same", "valid"]
+# correlate_methods = {"direct", "fft"}
+correlate_methods = ["auto"]
 
-# print("start {} end {}".format(start, end))
-print("start full: {} \nhalf: {}".format(start, start/2))
+for correlate_mode in correlate_modes:
+    for correlate_method in correlate_methods:
+      z = signal.correlate(source, snippet, correlate_mode, correlate_method)
+      peak = np.argmax(np.abs(z))
+      start = (peak-len(snippet)+1)/rate
+      end   = peak/rate
+      print("{} {}: {}".format(correlate_mode, correlate_method, start))
