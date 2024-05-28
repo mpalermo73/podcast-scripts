@@ -89,3 +89,24 @@ done
 # Last-Modified: Fri, 28 Feb 2020 22:42:24 GMT
 # Last-Modified: Fri, 29 May 2020 09:52:52 GMT
 # Last-Modified: Sat, 29 May 2021 00:08:55 GMT
+
+# -> % IFS=$'\n'; for LINE in $(curl -sL https://tpbpodcast.libsyn.com/rss | xmllint --format --nsclean --xpath '//item/title | //item/pubDate' - | sed 's/<title>\(.*\)<\/title>/RAW_TITLE="\1"/ ; s/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' | grep -A1 Season) ; do eval "$LINE" ; if [ "${RAW_TITLE}" -a "${PUBDATE}" ] ; then echo -e "RAW_TITLE: $RAW_TITLE\nPUBDATE: $PUBDATE" ; unset RAW_TITLE PUBDATE ; fi ; echo "---------" ; done
+# ---------
+# RAW_TITLE: Season 6 Episode 1 - The Silence Of The Bubbles
+# PUBDATE: Mon, 27 May 2024 10:00:00 +0000
+# ---------
+# ---------
+# ---------
+# RAW_TITLE: Season 5 Episode 1 - Boys vs. Wild
+# PUBDATE: Mon, 29 May 2023 10:00:00 +0000
+# ---------
+# ---------
+# ---------
+# RAW_TITLE: Season 4 Episode 1 - Live As F**k In Orlando
+# PUBDATE: Mon, 30 May 2022 10:00:19 +0000
+# ---------
+# ---------
+# ---------
+# RAW_TITLE: Season 2 Episode 1 - Smurfgate
+# PUBDATE: Mon, 01 Jun 2020 10:00:00 +0000
+# ---------
