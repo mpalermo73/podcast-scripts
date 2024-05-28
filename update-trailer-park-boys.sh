@@ -21,6 +21,8 @@ S03="1622174400"
 S04="1653883200"
 # S05: May 29 12:00:00
 S05="1685332800"
+# S06: May 29 12:00:00
+S06="1716782400"
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
@@ -40,7 +42,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     PUBEPOCH=$(date -d "${PUBDATE}" +%s)
 
-    if [ ${PUBEPOCH} -ge ${S05} ] ; then
+    if [ ${PUBEPOCH} -ge ${S06} ] ; then
       # if [ "${PUBEPOCH}" -ge ${S05} ] ; then SEASON="05"
       # elif [ "${PUBEPOCH}" -ge ${S04} ] ; then SEASON="04"
       # elif [ "${PUBEPOCH}" -ge ${S03} ] ; then SEASON="03"
