@@ -39,7 +39,7 @@ function GetPodcastImage() {
   if [ "${IMAGE}" ] ; then
 
     PODCAST_ALBUM_ART="/tmp/${PRETTY_NAME}.jpg"
-    curl -A "${UA}" -sL "${IMAGE}" | convert -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K - "${PODCAST_ALBUM_ART}"
+    curl -A "${UA}" -sL "${IMAGE}" | magick - -resize ${MAX_DIMENSION} -define jpeg:extent=${MAX_SIZE}K "${PODCAST_ALBUM_ART}"
     if [ ! -f "${TANK_LOCAL}/.folder.jpg" ] ; then
       cp -av "${PODCAST_ALBUM_ART}" "${TANK_LOCAL}/.folder.jpg"
       echo -e "[Desktop Entry]\\nIcon=./.folder.jpg" > "${TANK_LOCAL}/.directory"
