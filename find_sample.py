@@ -30,8 +30,8 @@ if rate != rate_snippet:
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.correlate.html
 # compute the cross-correlation
 
-correlate_modes = ["full"]
-# correlate_modes = ["full", "same", "valid"]
+# correlate_modes = ["full"]
+correlate_modes = ["full", "same", "valid"]
 # correlate_methods = {"direct", "fft"}
 correlate_methods = ["auto"]
 
