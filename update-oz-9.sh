@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-URL_RSS="https://oz9podcast.libsyn.com/rss"
+# URL_RSS="https://oz9podcast.libsyn.com/rss"
+URL_RSS="https://feeds.megaphone.fm/oz9"
 PRETTY_NAME="Oz 9"
 GOOD_REGEX="^[eE]pisode.*$"
 
@@ -22,7 +23,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-    eval $(echo "${RAW_TITLE}" | sed 's/episode \([a-zA-Z]\+-\{0,1\}[a-zA-Z]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/') 2>/dev/null
+    eval $(echo "${RAW_TITLE}" | sed 's/episode \([a-zA-Z].*\): \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/ ; s/&amp;/\&/') 2>/dev/null
 
     [ ! "${TRACK}" -o ! "${TITLE}" ] && eval $(echo "${RAW_TITLE}" | sed 's/episode \([0-9]\+\).*: \+\(.*\)/TRACK=\"\1\"\nTITLE=\"\2\"/')
 
