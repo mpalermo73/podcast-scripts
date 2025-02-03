@@ -4,10 +4,10 @@ URL_RSS="https://tpbpodcast.libsyn.com/rss"
 PRETTY_NAME="Trailer Park Boys"
 # GOOD_REGEX="^[0-9].*$"
 
-# DEBUG=TRUE
+DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
-UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
 # Season Starts
@@ -23,6 +23,8 @@ S04="1653883200"
 S05="1685332800"
 # S06: May 29 12:00:00
 S06="1716782400"
+
+
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 

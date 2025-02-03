@@ -9,7 +9,7 @@ PRETTY_NAME="Doctor Who"
 DEBUG=TRUE
 JUST_TEST=TRUE
 # NO_SLACK=TRUE
-# UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_SYNCTHING=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 

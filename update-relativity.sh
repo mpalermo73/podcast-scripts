@@ -7,7 +7,7 @@ GOOD_REGEX="^[rR][eE][lL][aA][tT][iI][vV][iI][tT][yY] [0-9]+"
 DEBUG=TRUE
 # JUST_TEST=TRUE
 NO_SLACK=TRUE
-UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh

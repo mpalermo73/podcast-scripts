@@ -9,7 +9,7 @@ GOOD_REGEX="^Black Jack Justice"
 DEBUG=TRUE
 # JUST_TEST=TRUE
 NO_SLACK=TRUE
-# UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_SYNCTHING=TRUE
 NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh

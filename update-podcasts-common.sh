@@ -62,7 +62,7 @@ function CopyEpisode() {
 
     case ${MTANK} in
       ${TANK_SYNCTHING})
-        if [ ${UPDATE_SYNCTHING} ] ; then
+        if [ ! ${NO_UPDATE_SYNCTHING} ] ; then
           # [ ${DEBUG} ] && echo "UPDATING ${MTANK}"
           [ ! "$(mount | grep ${MOUNT_SYNCTHING})" ] && mount ${MOUNT_SYNCTHING}
           
@@ -159,8 +159,8 @@ function AnnounceEpisode() {
   [ ! "${IMAGE}" ] && OUTPUT="New Episode!\n"
   [ "${IMAGE}" ] && OUTPUT="<${IMAGE}|${PRETTY_NAME}>\n"
   OUTPUT+="<${FILEURL}|${TITLE}>\n"
-  # [ ${UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] && OUTPUT+="Copied to Syncthing"
-  [ ${UPDATE_SYNCTHING} ] && OUTPUT+="Copied to Syncthing"
+  # [ ! ${NO_UPDATE_SYNCTHING} ] && [ ${NEW_EPISODE} ] && OUTPUT+="Copied to Syncthing"
+  [ ! ${NO_UPDATE_SYNCTHING} ] && OUTPUT+="Copied to Syncthing"
 
   [ ${DEBUG} ] && echo PAYLOAD: \"$(echo ${OUTPUT} | sed 's/\\n/\n/g')\"
 
