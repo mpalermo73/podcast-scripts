@@ -190,7 +190,7 @@ function DisectInfo() {
 
     OUTFILE="${TRACK} - ${TITLE}.mp3"
     # OUTFILE=$(echo "${OUTFILE}" | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')
-    OUTFILE=$(echo "${OUTFILE}" | sed 's/[&#*?!\/]//g ; s/:/ -/g')
+    OUTFILE=$(echo "${OUTFILE}" | sed 's/[&#*?¡!\/]//g ; s/:/ -/g')
 
     PUBEPOCH="$(date -d "${PUBDATE}" +%s)"
 
@@ -274,7 +274,7 @@ function GetItem() {
 
 
 function DumpFound() {
-  echo "FOUND ALL:"
+  echo "FOUND THESE:"
   [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
   [ "${EPISODE}" ] && echo -e "\\tEPISODE: ${EPISODE}"
   [ "${EPURL}" ] && echo -e "\\tEPURL: ${EPURL}"
@@ -292,6 +292,7 @@ function DumpFound() {
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
+  echo "---------------------------"
 }
 
 
