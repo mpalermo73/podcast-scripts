@@ -186,7 +186,11 @@ function DisectInfo() {
     [ ${DEBUG} ] && echo "TRACK IS ONLY NUMBERS: \"$TRACK\""
 
     TITLE=$(echo ${TITLE} | awk '{$1=$1};1')
-    [[ ${#TRACK} -le 3 ]] && TRACK=$(printf "%03d\\n" ${TRACK})
+    # [[ ${#TRACK} -le 3 ]] && TRACK=$(printf "%03d\\n" ${TRACK})
+
+    [[ ${#TRACK} -lt 2 ]] && TRACK="0${TRACK}"
+    [[ ${#TRACK} -lt 3 ]] && TRACK="0${TRACK}"
+
 
     OUTFILE="${TRACK} - ${TITLE}.mp3"
     # OUTFILE=$(echo "${OUTFILE}" | sed 's/.*: \(.*\)/\1/;s/[&#*?!]//g')
@@ -258,7 +262,7 @@ function GetItem() {
 
   ITEM=$1
 
-  xmllint --xpath "//item[$ITEM]/title | //item[$ITEM]/enclosure/@url | //item[$ITEM]/pubDate | //item[$ITEM]/*[name()='itunes:image'] | //item[$ITEM]/*[name()='itunes:episodeType'] | //item[$ITEM]/*[name()='itunes:episode'] | //item[$ITEM]/*[name()='itunes:season'] | //item/*[@medium='audio']" "/tmp/${GENERIC_NAME}.xml" \
+  xmllint --xpath "//item[$ITEM]/title | //item[$ITEM]/enclosure/@url | //item[$ITEM]/pubDate | //item[$ITEM]/*[name()='itunes:image'] | //item[$ITEM]/*[name()='itunes:episodeType'] | //item[$ITEM]/*[name()='itunes:episode'] | //item[$ITEM]/*[name()='itunes:season'] | //item[$ITEM]/*[@medium='audio']" "/tmp/${GENERIC_NAME}.xml" \
   | sed 's/"//g;s/\&amp\;/\&/g;s/^[\ \t]\+//g;s/<\!\[CDATA\[//g;s/\]\]>//g' \
   | sed 's/<title>\(.*\)<\/title>/RAW_TITLE="\1"/' \
   | sed 's/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/' \
@@ -292,7 +296,7 @@ function DumpFound() {
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
-  echo "---------------------------"
+  # echo "---------------------------"
 }
 
 
