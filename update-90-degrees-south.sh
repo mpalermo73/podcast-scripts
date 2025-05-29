@@ -40,3 +40,11 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
     [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
   fi
 done
+
+
+# -> % yq --input-format xml --output-format json /tmp/90DegreesSouth.xml | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select(.episodeType == "full")]' | jq length
+# 55
+
+# -> % yq --input-format xml --output-format json /tmp/90DegreesSouth.xml | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select(.episodeType != "full")]' | jq length
+8
+
