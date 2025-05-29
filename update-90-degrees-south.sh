@@ -6,11 +6,11 @@ GOOD_REGEX="^Episode .*[0-9]+:"
 
 
 
-# DEBUG=TRUE
-# JUST_TEST=TRUE
-# NO_SLACK=TRUE
-# NO_UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=TRUE
+DEBUG=TRUE
+JUST_TEST=TRUE
+NO_SLACK=TRUE
+NO_UPDATE_SYNCTHING=TRUE
+NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
@@ -22,19 +22,26 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   eval $(GetItem ${ITEM})
 
-  if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] && [ $TYPE = "full" ] ; then
+  if [ $TYPE = "full" ] ; then
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
+    [ ${DEBUG} ] && echo "--------------------------- START OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
+
+    [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json /tmp/90DegreesSouth.xml | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select(.episodeType == "full")]' | jq length)
+
     TITLE="${RAW_TITLE#*:}"
 
-    [[ ${#SEASON} -le 2 ]] && SEASON=$(printf "%02d\\n" ${SEASON})
-
-    TRACK="${SEASON}$(printf "%02d\\n" ${TRACK#*0})"
+    TRACK=${TRACK_COUNTING}
+    [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"
 
     DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
     UnsetThese
+
+    TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
+
+    [ ${DEBUG} ] && echo "--------------------------- END OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
 
   else
     [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
