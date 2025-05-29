@@ -32,14 +32,15 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
     [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=${ITEM_COUNT}
 
     TRACK=${TRACK_COUNTING}
+    [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"
 
     [[ "${RAW_TITLE}" =~ ^"TPB in Quarantine" ]] && RAW_TITLE="$(echo "${RAW_TITLE}" | sed 's/.*Episode\s\+\([0-9]\+\).*/Episode \1 - Quarantine Episode \1/')"
 
     eval $(echo "$RAW_TITLE" | sed 's/.*Episode\s\+\([0-9]\+\)\s\?\+.\s\?\+\(.*\)/TITLE="\2"/')
 
-    [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"
-
     DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
+
+    UnsetThese
 
     TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
 
