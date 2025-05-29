@@ -115,9 +115,39 @@ function EpisodeTagging() {
 
   [ ${DEBUG} ] && DumpFound
 
-  eyeD3 -l critical --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
+echo "========================== STRIP MP3 TAGS =========================="
+  [ ${DEBUG} ] && echo "Stripping tags from ${TAGGING_FILE}"
+  [ ${DEBUG} ] && echo "Using eyeD3 to remove all tags from ${TAGGING_FILE}"
+  [ ${DEBUG} ] && echo "Tagging ${TAGGING_FILE} with:"
+  [ ${DEBUG} ] && echo "  TITLE: ${TITLE}"
+  [ ${DEBUG} ] && echo "  TRACK: ${TRACK}"
+  [ ${DEBUG} ] && echo "  YEAR: ${YEAR}"
+  [ ${DEBUG} ] && echo "  GENRE: ${GENRE}"
+  [ ${DEBUG} ] && echo "  PRETTY_NAME: ${PRETTY_NAME}"
+  [ ${DEBUG} ] && echo "  PODCAST_ALBUM_ART: ${PODCAST_ALBUM_ART}"
+  # eyeD3 -l critical --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
+  # eyeD3 --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
+  id3convert --strip "${TAGGING_FILE}"
 
- 	eyeD3 -l critical --force-update --no-color --preserve-file-times --quiet \
+  [ ${DEBUG} ] && echo "Stripped tags from ${TAGGING_FILE}"
+
+  [ ${DEBUG} ] && echo "========================== TAG MP3 FILE =========================="
+
+echo "========================== WRITE MP3 TAGS =========================="
+ 	# eyeD3 -l critical --force-update --no-color --preserve-file-times --quiet \
+
+[ ${DEBUG} ] && echo "eyeD3 --force-update --no-color --preserve-file-times --quiet \
+	--add-image=\"${PODCAST_ALBUM_ART}\":FRONT_COVER:\"${PRETTY_NAME}\" \
+	--text-frame=\"TYER:${YEAR}\" \
+	--text-frame=\"TPOS:\" \
+	-t \"${TITLE}\" \
+	-G \"${GENRE}\" \
+	-A \"${PRETTY_NAME} Podcast\" \
+	-a \"${PRETTY_NAME}\" \
+	-n \"${TRACK}\" \
+	\"${TAGGING_FILE}\""
+
+ 	eyeD3 --force-update --no-color --preserve-file-times --quiet \
 	--add-image="${PODCAST_ALBUM_ART}":FRONT_COVER:"${PRETTY_NAME}" \
 	--text-frame="TYER:${YEAR}" \
 	--text-frame="TPOS:" \
@@ -296,6 +326,7 @@ function DumpFound() {
   [ "${TRACK}" ] && echo -e "\\tTRACK: ${TRACK}"
   [ "${TYPE}" ] && echo -e "\\tTYPE: ${TYPE}"
   [ "${WORD_NUMS}" ] && echo -e "\\tDO_RETAG: ${WORD_NUMS}"
+  [ "${GENRE}" ] && echo -e "\\tGENRE: ${GENRE}"
   # echo "---------------------------"
 }
 
