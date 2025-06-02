@@ -16,9 +16,6 @@ source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 WriteFeed
 
 
-LAST_YEAR=$(date -d "last year" +%y)
-# LAST_YEAR=0
-
 for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   eval $(GetItem ${ITEM})

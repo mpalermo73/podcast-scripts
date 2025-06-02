@@ -32,7 +32,7 @@ if [ $# -eq 1 ] && [[ "$1" =~ ^[rR][eE][tT][aA][gG]$ ]] ; then
   DO_RETAG=TRUE
 fi
 
-
+LAST_YEAR=$(date -d "last year" +%y)
 
 function GetPodcastImage() {
 

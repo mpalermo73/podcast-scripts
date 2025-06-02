@@ -4,20 +4,17 @@ URL_RSS="https://tpbpodcast.libsyn.com/rss"
 PRETTY_NAME="Trailer Park Boys"
 # GOOD_REGEX="^[0-9].*$"
 
-# DEBUG=TRUE
-# JUST_TEST=TRUE
-# NO_SLACK=TRUE
-# NO_UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=TRUE
+DEBUG=TRUE
+JUST_TEST=TRUE
+NO_SLACK=TRUE
+NO_UPDATE_SYNCTHING=TRUE
+NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
 WriteFeed
 
-
-LAST_YEAR=$(date -d "last year" +%y)
-# LAST_YEAR=0
 
 for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
