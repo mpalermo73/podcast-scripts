@@ -6,7 +6,7 @@ GOOD_REGEX="^MTO Season [0-9]"
 
 # DEBUG=TRUE
 # JUST_TEST=TRUE
-# NO_SLACK=TRUE
+NO_SLACK=TRUE
 NO_UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
@@ -36,7 +36,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
       [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"
       [[ ${#TRACK} -le 1 ]] && TRACK="00${TRACK}"
 
-      eval $(echo "${RAW_TITLE}" | sed 's/.*: \“\(.*\)\”.*/TITLE=\"\1\"/ ; s/.*MTO Phases - \(Story [0-9]\+: .*\)<\/title>/TITLE="\1"/')
+      eval $(echo "${RAW_TITLE}" | sed 's/.*: \“\(.*\)\”.*/TITLE=\"\1\"/ ; s/.*MTO.*Phases.*\(Story\s\+[0-9]\+:\s\+.*\)/TITLE="\1"/')
 
       DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
