@@ -37,9 +37,9 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     DisectInfo "${PUBDATE}" "${EPURL}" "${RAW_TITLE}" "${TRACK}"
 
-    TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
-
     [ ${DEBUG} ] && echo -e "--------------------------- END OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------\n\n"
+
+    TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
 
   else
     [ ${DEBUG} ] && echo "Skipping old episode: ${RAW_TITLE} (${PUB_YEAR} <= ${LAST_YEAR}) or not a full episode (${TYPE})"

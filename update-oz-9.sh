@@ -25,7 +25,6 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-
     if [ "${PUB_YEAR}" -gt "${LAST_YEAR}" ] ; then
 
       [ ${DEBUG} ] && echo -e "\n\n--------------------------- START OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
@@ -42,9 +41,9 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
       UnsetThese
 
-      TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
-
       [ ${DEBUG} ] && echo "--------------------------- END OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
+
+      TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
 
     else
       [ ${DEBUG} ] && echo "Skipping old episode: ${RAW_TITLE} (${PUB_YEAR} <= ${LAST_YEAR})"

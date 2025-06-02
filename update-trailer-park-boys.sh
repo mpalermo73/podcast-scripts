@@ -39,9 +39,9 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     UnsetThese
 
-    TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
-
     [ ${DEBUG} ] && echo "--------------------------- END OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
+
+    TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
 
   else
     [ ${DEBUG} ] && echo "Skipping old episode: ${RAW_TITLE} (${PUB_YEAR} <= ${LAST_YEAR})"
