@@ -17,7 +17,7 @@ EPISODES="$(curl -sL ${URL_RSS} | xmllint --format - \
   | sed 's/"//g;s/\&amp\;/\&/g;s/^\ \+//g;s/<title>\(.*\)<\/title>/TITLE="\1"/;s/<pubDate>\(.*\)<\/pubDate>/PUBDATE="\1"/;s/<enclosure.*url=\(..*mp3\).*/EPURL="\1"/')"
 
 
-source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
+source $HOME/GIT/podcast-scripts/common-functions.sh
 
 
 

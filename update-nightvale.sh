@@ -13,7 +13,7 @@ GOOD_REGEX="^[0-9]+ "
 # NO_UPDATE_REMOTE=TRUE
 
 
-source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
+source $HOME/GIT/podcast-scripts/common-functions.sh
 
 WriteFeed
 

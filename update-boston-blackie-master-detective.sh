@@ -11,7 +11,7 @@ GOOD_REGEX="S[0-9]+E[0-9]+"
 NO_SLACK=TRUE
 # NO_UPDATE_SYNCTHING=TRUE
 
-source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
+source $HOME/GIT/podcast-scripts/common-functions.sh
 
 CurlFeed
 
