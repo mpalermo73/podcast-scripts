@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # URL_RSS="https://oz9podcast.libsyn.com/rss"
-URL_RSS="https://feeds.megaphone.fm/oz9"
+# URL_RSS="https://feeds.megaphone.fm/oz9"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxMTE0OSIsInUiOiIyMjU5MjExIiwiZCI6IjE3MDYxMjkzMjkiLCJrIjoyODV9fDM0M2M5MzlmYzQxMGNjYTRiZGI4NGNiY2QwZGQ1ODIwNTQ4YTNmZGMyMTg0MDNlODUwNTlmMzY1OThjMzYwZWI.rss"
 PRETTY_NAME="Oz 9"
 GOOD_REGEX="^[eE]pisode.*$"
 
@@ -12,6 +13,7 @@ GOOD_REGEX="^[eE]pisode.*$"
 # NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
+
 
 WriteFeed
 
@@ -24,6 +26,8 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
   if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
+
+    # LAST_YEAR=0
 
     if [ "${PUB_YEAR}" -gt "${LAST_YEAR}" ] ; then
 

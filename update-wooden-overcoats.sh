@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-URL_RSS="http://www.woodenovercoats.com/episodes?format=rss"
+# URL_RSS="http://www.woodenovercoats.com/episodes?format=rss"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxOTM0NyIsInUiOiIyMjU5MjExIiwiZCI6IjE3NDQ0MDYwMTgiLCJrIjoyODV9fDEwNzA0ODEyMTgyNzk0YzRmMmJhYjk4OGQwZmIzNWVkY2Y0ODg3ODA4MGZkM2RkZGE0YmE5MmI0YWU3ZWEyM2U.rss"
 PRETTY_NAME="Wooden Overcoats"
 GOOD_REGEX="Episode [0-9]+"
 
@@ -10,32 +11,41 @@ GOOD_REGEX="Episode [0-9]+"
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 # NO_UPDATE_SYNCTHING=TRUE
+# NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh
 
-CurlFeed
+WriteFeed
 
-for LINE in ${EPISODES} ; do
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
-  eval "${LINE}"
+  eval $(GetItem ${ITEM})
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" ] ; then
+  echo $ITEM
 
-    if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] && [[ ! "${TITLE}" =~ Remastered ]]; then
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
+  if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
+    [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-      [ ${#SEASON} -eq 1 ] && SEASON="0${SEASON}"
-      [ ${#EPISODE} -eq 1 ] && EPISODE="0${EPISODE}"
+      [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json /tmp/WoodenOvercoats.xml | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select((.episodeType == "full") and ((.title | tostring) | contains("Episode")))]' | jq length)
 
-      TITLE="${SEASON}${EPISODE} - $(echo "${TITLE}" | sed 's/.*Season.*Episode.*[0-9]\+[ -:]\+//')"
+      TRACK=${TRACK_COUNTING}
+      [[ ${#TRACK} -le 1 ]] && TRACK="0${TRACK}"
 
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
+      eval $(echo "${RAW_TITLE}" | sed 's/ -/:/ ; s/.*:\s\+\(.*\)/TITLE="\1"/')
 
-    else
-      [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
-    fi
-    UnsetThese
+      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
+
+      UnsetThese
+
+      [ ${DEBUG} ] && echo "--------------------------- END OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
+
+      TRACK_COUNTING=$(echo "${TRACK_COUNTING} - 1" | bc)
+
+  else
+    [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
   fi
+
+  UnsetThese
 
 done

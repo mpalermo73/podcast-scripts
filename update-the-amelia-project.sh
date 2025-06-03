@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-URL_RSS="https://rss.art19.com/the-amelia-project"
+# URL_RSS="https://rss.art19.com/the-amelia-project"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNTk2IiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMwODAxMCIsImsiOjI4NX18ZDllODhjMmZhNGFkZTE3MjNjZTRhMjQ4N2E4MTE1NDI5MGJhMzE3YTQ3YWJmZWI2ODQ4Y2UyMWQ3MTM3NmRlYw.rss"
 PRETTY_NAME="The Amelia Project"
 GOOD_REGEX="^Episode [0-9]+ - "
 

@@ -282,7 +282,8 @@ function ProcessEpisode() {
 
 
 function WriteFeed() {
-  curl -A "${UA}" -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
+  # curl -A "${UA}" -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
+  curl -sL "${URL_RSS}" | xmllint --format --output "/tmp/${GENERIC_NAME}.xml" -
   ITEM_COUNT=$(xmllint --format --xpath "count(//item)" "/tmp/${GENERIC_NAME}.xml")
 }
 

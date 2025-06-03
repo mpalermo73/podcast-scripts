@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-URL_RSS="https://feeds.megaphone.fm/moonbasethetaout"
+# URL_RSS="https://feeds.megaphone.fm/moonbasethetaout"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUyIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU3NCIsImsiOjI4NX18NTI3MzQ0MjMzZjg2ZGYyZTg4MjMyYmFjYTdmMmEyOWNiYTQyZjUzMmFmZjM0NWFmNjQxNjBmMWVjY2E5Y2MwYg.rss"
 PRETTY_NAME="Moonbase Theta Out"
 GOOD_REGEX="^MTO Season [0-9]"
 
 # DEBUG=TRUE
 # JUST_TEST=TRUE
-NO_SLACK=TRUE
-NO_UPDATE_SYNCTHING=TRUE
+# NO_SLACK=TRUE
+# NO_UPDATE_SYNCTHING=TRUE
 # NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/update-podcasts-common.sh

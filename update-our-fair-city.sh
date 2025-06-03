@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 URL_RSS="https://ourfaircity.libsyn.com/rss"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxOTc1IiwidSI6IjIyNTkyMTEiLCJkIjoiMTY1NTQ5NjM4NSIsImsiOjI4NX18YWFjMzAyNGQzMDEzNmRkYTNhYWRlNzI5MjkzZDQ1NTFkMWRhMDFlZjJlMGRmZThkYTc3Y2JmNWMzOTEwNTBiZQ.rss"
 PRETTY_NAME="Our Fair City"
 GOOD_REGEX="^[eE]pisode [0-9]+.[0-9]+"
 
