@@ -27,7 +27,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
   if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
     [ ${DEBUG} ] && echo "PASS regex: \"${RAW_TITLE}\""
 
-      [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json /tmp/WoodenOvercoats.xml | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select((.episodeType == "full") and ((.title | tostring) | contains("Episode")))]' | jq length)
+      [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select((.episodeType == "full") and ((.title | tostring) | contains("Episode")))]' | jq length)
 
       TRACK=${TRACK_COUNTING}
       [[ ${#TRACK} -le 1 ]] && TRACK="0${TRACK}"
