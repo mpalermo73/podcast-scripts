@@ -2,6 +2,7 @@
 
 # NOTE: mp3gain -s r -T -r -p -c *mp3
 
+PATH=$PATH:/usr/local/bin
 
 IFS_BAK=$IFS
 IFS=$'\n'
