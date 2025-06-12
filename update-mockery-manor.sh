@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-URL_RSS="https://link.chtbl.com/mockerymanor?id=mockerymanor&platform=rss"
+# URL_RSS="https://link.chtbl.com/mockerymanor?id=mockerymanor&platform=rss"
+URL_RSS="https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUwIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU1OSIsImsiOjI4NX18MDA1ZWMxZmY5NzE4NWIxYjc4ZTJkZWYxNTdjMzJmNjE5Y2FkYTNiNmE0OGU2NGI1ODdhMGVkYWRiZDc3Y2QzZQ.rss"
 PRETTY_NAME="Mockery Manor"
 GOOD_REGEX="^S[0-9]+ E[0-9]+"
 
-# DEBUG=TRUE
+DEBUG=TRUE
 # JUST_TEST=TRUE
-# NO_SLACK=TRUE
-# NO_UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=TRUE
+NO_SLACK=TRUE
+NO_UPDATE_SYNCTHING=TRUE
+NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/common-functions.sh
 
