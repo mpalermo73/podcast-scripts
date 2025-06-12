@@ -27,7 +27,7 @@ ITEM_COUNT="${ITEM_COUNT:-0}"
 
 [ ! ${DEBUG} ] && WGET_DEBUG="--quiet"
 # [ ! "${DATE_MIN}" ] && DATE_MIN=$(date -d "- 100 year" "+%F")
-[ ! -d "${TANK_LOCAL}" ] && mkdir -p "${TANK_LOCAL}"
+[ ! -d "${TANK_LOCAL}" ] && [ ! "${JUST_TEST}" ] && mkdir -p "${TANK_LOCAL}"
 
 if [ $# -eq 1 ] && [[ "$1" =~ ^[rR][eE][tT][aA][gG]$ ]] ; then
   DO_RETAG=TRUE
@@ -116,7 +116,7 @@ function EpisodeTagging() {
 
   [ ${DEBUG} ] && DumpFound
 
-echo "========================== STRIP MP3 TAGS =========================="
+  [ ${DEBUG} ] && echo "========================== STRIP MP3 TAGS =========================="
   [ ${DEBUG} ] && echo "Stripping tags from ${TAGGING_FILE}"
   [ ${DEBUG} ] && echo "Using eyeD3 to remove all tags from ${TAGGING_FILE}"
   [ ${DEBUG} ] && echo "Tagging ${TAGGING_FILE} with:"
@@ -128,13 +128,11 @@ echo "========================== STRIP MP3 TAGS =========================="
   [ ${DEBUG} ] && echo "  PODCAST_ALBUM_ART: ${PODCAST_ALBUM_ART}"
   # eyeD3 -l critical --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
   # eyeD3 --no-color --preserve-file-times --quiet --remove-all "${TAGGING_FILE}" &>/dev/null
-  id3convert --strip "${TAGGING_FILE}"
+  id3convert --strip "${TAGGING_FILE}" > /dev/null
 
   [ ${DEBUG} ] && echo "Stripped tags from ${TAGGING_FILE}"
 
-  [ ${DEBUG} ] && echo "========================== TAG MP3 FILE =========================="
-
-echo "========================== WRITE MP3 TAGS =========================="
+  [ ${DEBUG} ] && echo "========================== WRITE MP3 TAGS =========================="
  	# eyeD3 -l critical --force-update --no-color --preserve-file-times --quiet \
 
 [ ${DEBUG} ] && echo "eyeD3 --force-update --no-color --preserve-file-times --quiet \
