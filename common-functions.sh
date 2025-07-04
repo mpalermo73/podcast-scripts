@@ -351,3 +351,11 @@ function UnsetThese() {
 # }
 # jq '.rss.channel.item[] | select(.episodeType == "full") | (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) as $title | {$title,episodeType}'
 
+# {
+# "pubDate": "Wed, 11 Dec 2024 05:02:00 -0000",
+# "title": "The Matty Tapes - 3 - Christmas 1996",
+# "number": 62
+# }
+# palermo@aragorn [10:27:33 AM EDT] [~/Desktop/F & F]
+# curl -sL "https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUwIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU1OSIsImsiOjI4NX18MDA1ZWMxZmY5NzE4NWIxYjc4ZTJkZWYxNTdjMzJmNjE5Y2FkYTNiNmE0OGU2NGI1ODdhMGVkYWRiZDc3Y2QzZQ.rss" | yq --input-format xml --output-format json | sed 's/"+\?@\?/"/g' | jq . | jq '.rss.channel.item | reverse | range(0; length) as $i | (.[$i]) + {indexNumber: ($i + 1)} | (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) as $title | .title = $title| . '
+
