@@ -334,3 +334,20 @@ function DumpFound() {
 function UnsetThese() {
   unset EPURL IMAGE MEDIA NEW_EPISODE OLD OUTFILE PART PUBDATE PUBEPOCH SEASON TITLE TRACK TYPE
 }
+
+
+
+
+# {
+# "title": "Feed Drop! Unwell 1.01: Homecoming",
+# "episodeType": "trailer"
+# }
+# {
+# "title": [
+# "2.09 Extraordinary Times",
+# "Extraordinary Times"
+# ],
+# "episodeType": "full"
+# }
+# jq '.rss.channel.item[] | select(.episodeType == "full") | (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) as $title | {$title,episodeType}'
+
