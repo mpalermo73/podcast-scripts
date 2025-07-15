@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 URL_RSS="http://nightvale.libsyn.com/rss"
-PRETTY_NAME="Night Vale"
+PRETTY_NAME="Nightvale"
 GOOD_REGEX="^[0-9]+ "
 
 
 
-# DEBUG=TRUE
-# JUST_TEST=TRUE
-# NO_SLACK=TRUE
-# NO_UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=TRUE
+DEBUG=TRUE
+JUST_TEST=TRUE
+NO_SLACK=TRUE
+NO_UPDATE_SYNCTHING=TRUE
+NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/common-functions.sh
