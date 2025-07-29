@@ -307,6 +307,19 @@ function GetItem() {
 
 
 
+function GetItemJson(){
+  
+  ITEM=$1
+
+  yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" > "/tmp/${GENERIC_NAME}.json"
+
+  
+
+  jq -r ".rss.channel.item[$((ITEM - 1))] | .title as \$title | .pubDate as \$pubDate | .enclosure.url as \$epurl | .itunes.image.href as \$image | .itunes.episodeType as \$type | .itunes.episode as \$track | .itunes.season as \$season | {RAW_TITLE: (\$title | if type == \"array\" then (.[0] | tostring) else (.|tostring) end), PUBDATE: \$pubDate, EPURL: \$epurl, IMAGE: \$image, TYPE: \$type, TRACK: \$track, SEASON: \$season}"
+}
+
+
+
 function DumpFound() {
   echo "FOUND THESE:"
   [ "${DO_RETAG}" ] && echo -e "\\tDO_RETAG: ${DO_RETAG}"
