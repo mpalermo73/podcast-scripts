@@ -349,7 +349,7 @@ function UnsetThese() {
 }
 
 
-
+#  curl -sL "rss" | yq --input-format xml --output-format json - | sed 's/\(.*\s\+"\)+@\?/\1/'
 
 # {
 # "title": "Feed Drop! Unwell 1.01: Homecoming",
@@ -362,7 +362,7 @@ function UnsetThese() {
 # ],
 # "episodeType": "full"
 # }
-# jq '.rss.channel.item[] | select(.episodeType == "full") | (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) as $title | {$title,episodeType}'
+# jq '.rss.channel.item[] | select(.episodeType == "full") | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | {title,episodeType}'
 
 # {
 # "pubDate": "Wed, 11 Dec 2024 05:02:00 -0000",
@@ -370,5 +370,9 @@ function UnsetThese() {
 # "number": 62
 # }
 # palermo@aragorn [10:27:33 AM EDT] [~/Desktop/F & F]
-# curl -sL "https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUwIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU1OSIsImsiOjI4NX18MDA1ZWMxZmY5NzE4NWIxYjc4ZTJkZWYxNTdjMzJmNjE5Y2FkYTNiNmE0OGU2NGI1ODdhMGVkYWRiZDc3Y2QzZQ.rss" | yq --input-format xml --output-format json | sed 's/"+\?@\?/"/g' | jq . | jq '.rss.channel.item | reverse | range(0; length) as $i | (.[$i]) + {indexNumber: ($i + 1)} | (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) as $title | .title = $title| . '
+# curl -sL "https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUwIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU1OSIsImsiOjI4NX18MDA1ZWMxZmY5NzE4NWIxYjc4ZTJkZWYxNTdjMzJmNjE5Y2FkYTNiNmE0OGU2NGI1ODdhMGVkYWRiZDc3Y2QzZQ.rss" | yq --input-format xml --output-format json | sed 's/"+\?@\?/"/g' | jq . | jq '.rss.channel.item | reverse | range(0; length) as $i | (.[$i]) + {indexNumber: ($i + 1)} | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | . '
 
+
+# -> % cat ~/Desktop/oz9.json | jq '.rss.channel.item[1] | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | .description = (.description // .summary) | .url = (.enclosure.url) | .image=(.image.href) | {title,pubDate,episodeType,season,episode,url,image,description}'
+
+# -> % cat ~/Desktop/oz9.json | jq -r '.rss.channel.item[1] | "RAW_TITLE=\""+ (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) +"\"", "PUBDATE=\""+ .pubDate +"\"", "DESCRIPTION=\""+ (.description // .summary) +"\"", "EPURL=\""+ (.enclosure.url) +"\"", "IAMGE=\""+ (.image.href) +"\"", "TYPE=\""+ .episodeType +"\"", "SEASON=\""+ .season +"\"", "TRACK=\""+ .episode +"\"", (if select(.poop != null) then "POOP=\""+ .poop +"\"" end)'
