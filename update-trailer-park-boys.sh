@@ -7,7 +7,7 @@ URL_RSS="https://tpbpodcast.libsyn.com/rss"
 PRETTY_NAME="Trailer Park Boys"
 # GOOD_REGEX="^[0-9].*$"
 
-DEBUG=TRUE
+# DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 # NO_UPDATE_SYNCTHING=TRUE
