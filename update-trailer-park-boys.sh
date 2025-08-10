@@ -7,7 +7,7 @@ URL_RSS="https://tpbpodcast.libsyn.com/rss"
 PRETTY_NAME="Trailer Park Boys"
 # GOOD_REGEX="^[0-9].*$"
 
-# DEBUG=TRUE
+DEBUG=TRUE
 # JUST_TEST=TRUE
 # NO_SLACK=TRUE
 # NO_UPDATE_SYNCTHING=TRUE
@@ -18,12 +18,8 @@ source $HOME/GIT/podcast-scripts/common-functions.sh
 
 WriteFeed
 
-
-# echo $TANK_LOCAL
-# find "$TANK_LOCAL" -type f -name "*.mp3" | wc -l
-# exit
-
 for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
+
 
   eval $(GetItem ${ITEM})
 
@@ -33,11 +29,21 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   if [ "${PUB_YEAR}" -gt "${LAST_YEAR}" ] ; then
 
+
     [ ${DEBUG} ] && echo "--------------------------- START OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
 
-    [[ "${RAW_TITLE}" =~ ^"TPB in Quarantine" ]] && RAW_TITLE="$(echo "${RAW_TITLE}" | sed 's/.*Episode\s\+\([0-9]\+\).*/Episode \1 - Quarantine Episode \1/')"
+    if [ "${RAW_TITLE/TPB in Quarantine*/true}" == "true" ] ; then
+      [ ${DEBUG} ] && echo -e "${BD}${WH}QUARANTINE Episode detected: ${RAW_TITLE}${NO}"
+      eval $(echo "${RAW_TITLE}" | sed 's/.*Episode\s\+\([0-9]\+\).*/TITLE="Quarantine Episode \1"/')
 
-    eval $(echo "$RAW_TITLE" | sed 's/.*Episode\s\+\([0-9]\+\)\s\?\+.\s\?\+\(.*\)/TRACK="\1"\nTITLE="\2"/')
+    elif [ "${RAW_TITLE/Episode [0-9]*/true}" == "true" ] ; then
+      [ ${DEBUG} ] && echo "${BD}${WH}STANDARD Episode detected: ${RAW_TITLE}${NO}"
+      eval $(echo "${RAW_TITLE}" | sed 's/.*Episode\s\+\([0-9]\+\)\s\?\+.\s\?\+\(.*\)/TRACK="\1"\nTITLE="\2"/')
+
+    else
+      [ ${DEBUG} ] && echo "${BD}${WH}UNKNOWN Episode format detected: ${RAW_TITLE}${NO}"
+        TITLE="${RAW_TITLE}"
+    fi
 
     TRACK=$(date -d "${PUBDATE}" +%y%V)
 
