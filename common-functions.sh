@@ -377,10 +377,14 @@ function UnsetThese() {
 
 # -> % cat ~/Desktop/oz9.json | jq '.rss.channel.item[1] | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | .description = (.description // .summary) | .url = (.enclosure.url) | .image=(.image.href) | {title,pubDate,episodeType,season,episode,url,image,description}'
 
+# | sed 's/"+\?@\?/"/g' 
+
+
 # -> % cat ~/Desktop/oz9.json | jq -r '.rss.channel.item[10] | 
   # "RAW_TITLE=\""+ (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) +"\"", 
   # "PUBDATE=\""+ .pubDate +"\"", 
-  # "DESCRIPTION=\""+ (.description // .summary) +"\"", "EPURL=\""+ (.enclosure.url) +"\"", 
+  # "DESCRIPTION=\""+ (.description // .summary) +"\"", 
+  # "EPURL=\""+ (.enclosure.url) +"\"", 
   # (if select(.image.href != null) then "IMAGE=\""+ .image.href +"\"" end),
   # (if select(.episodeType != null) then "TYPE=\""+ .episodeType +"\"" end),
   # (if select(.season != null) then "SEASON=\""+ .season +"\"" end),
