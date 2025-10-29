@@ -47,6 +47,8 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     TRACK=$(date -d "${PUBDATE}" +%y%V)
 
+    export IMAGE="https://i.postimg.cc/9Q8tHZT9/PAD.jpg"
+
     DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
 
     UnsetThese
