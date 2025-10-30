@@ -29,6 +29,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   if [ "${PUB_YEAR}" -gt "${LAST_YEAR}" ] ; then
 
+  RAW_TITLE="$(echo "${RAW_TITLE}" | sed "s/&#x27;/'/")"
 
     [ ${DEBUG} ] && echo "--------------------------- START OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
 
