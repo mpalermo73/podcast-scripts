@@ -6,33 +6,33 @@ GOOD_REGEX="^Episode .*[a-zA-Z]+:"
 
 
 
-# DEBUG=TRUE
-# JUST_TEST=TRUE
+DEBUG=TRUE
+JUST_TEST=TRUE
 # NO_SLACK=TRUE
 # NO_UPDATE_SYNCTHING=TRUE
-
+# NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/common-functions.sh
 
-CurlFeed
+WriteFeed
 
-for LINE in ${EPISODES} ; do
+for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
-  eval "${LINE}"
+  eval $(GetItem ${ITEM})
 
-  if [ "${PUBDATE}" -a "${EPURL}" -a "${TITLE}" -a "${IMAGE}" ] ; then
-    if [[ "${TITLE}" =~ ${GOOD_REGEX} ]] ; then
-      [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
+  PUB_YEAR=$(date -d "${PUBDATE}" +%y)
 
-      WORD_NUMS="$(echo ${TITLE,,} | sed 's/episode \(.*[a-z]\+\): .*/\1/')"
-      TITLE="$(echo $TITLE | sed "s/\([eE]pisode \).*[a-z]\+:\(.*\)/$($HOME/GIT/podcast-scripts/w2n.pl ${WORD_NUMS}) -\2/")"
+  # if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
-      DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}"
+    [ ${DEBUG} ] && echo "PASS regex: \"${TITLE}\""
 
-    else
-      [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
-    fi
-    UnsetThese
-  fi
+    WORD_NUMS="$(echo ${TITLE,,} | sed 's/episode \(.*[a-z]\+\): .*/\1/')"
+    TITLE="$(echo $TITLE | sed "s/\([eE]pisode \).*[a-z]\+:\(.*\)/$($HOME/GIT/podcast-scripts/w2n.pl ${WORD_NUMS}) -\2/")"
+
+    DisectInfo "${PUBDATE}" "${EPURL}" "${TITLE}" "${TRACK}"
+
+  # else
+  #   [ ${DEBUG} ] && echo "FAIL regex: \"${TITLE}\""
+  # fi
 
 done
