@@ -33,7 +33,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
       [ ${DEBUG} ] && echo -e "\n\n--------------------------- START OF TRACK ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------"
 
-      [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select(.episodeType == "full")]' | jq length)
+      [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" | sed 's/"+@\?/"/g ; s/itunes://g' | jq -S '[.rss.channel.item[] | select(.episodeType == "full")]' | jq length)
 
       TRACK=${TRACK_COUNTING}
       [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"
