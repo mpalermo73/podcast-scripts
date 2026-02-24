@@ -4,7 +4,7 @@
 
 # PATH=$PATH:/usr/local/bin
 
-source $HOME/GIT/scripts-git/shell_colors.sh
+[ $(which tput >/dev/null ; echo $?) - eq 0 ] && source $HOME/GIT/scripts-git/shell_colors.sh
 
 IFS_BAK=$IFS
 IFS=$'\n'
