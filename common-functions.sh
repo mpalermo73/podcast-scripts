@@ -176,14 +176,16 @@ function GetEpisode() {
   PUBDATE=${4}
   FILEURL=${5}
 
-  wget ${WGET_DEBUG} "${FILEURL}" -O "${TANK_LOCAL}/${OUTFILE}"
+  REMOTE_SIZE=$(curl --silent --location --head "${FILEURL}" | awk 'tolower($0) ~ /^content-length/ {print $2}')
 
-  OUTFILE_SIZE=$(du -s "${TANK_LOCAL}/${OUTFILE}" | cut -f1)
+  wget ${WGET_DEBUG} --continue "${FILEURL}" --output-document "${TANK_LOCAL}/${OUTFILE}"
 
-  if [ ${OUTFILE_SIZE} -eq 0 ] ; then
-    [ ${DEBUG} ] && echo "BAD DOWNLOAD: ${OUTFILE_SIZE}. Trying again..."
+  LOCAL_SIZE=$(stat --format='%s' "${TANK_LOCAL}/${OUTFILE}")
+
+  if [ -n "${REMOTE_SIZE}" ] && [ "${LOCAL_SIZE}" -ne "${REMOTE_SIZE}" ] ; then
+    [ ${DEBUG} ] && echo "BAD DOWNLOAD: ${LOCAL_SIZE} of ${REMOTE_SIZE} bytes. Trying again..."
     sleep 3
-    wget ${WGET_DEBUG} "${FILEURL}" -O "${TANK_LOCAL}/${OUTFILE}"
+    wget ${WGET_DEBUG} --continue "${FILEURL}" --output-document "${TANK_LOCAL}/${OUTFILE}"
   fi
 }
 
