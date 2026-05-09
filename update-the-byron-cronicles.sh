@@ -4,11 +4,11 @@ URL_RSS="https://ericbusbypresents.com/category/the-byron-chronicles/feed/"
 PRETTY_NAME="The Byron Chronicles"
 GOOD_REGEX="^[eE]pisode [0-9]+.[0-9]+"
 
-# DEBUG=TRUE
+DEBUG=TRUE
 # JUST_TEST=TRUE
 NO_SLACK=TRUE
-# NO_UPDATE_SYNCTHING=TRUE
-# NO_UPDATE_REMOTE=TRUE
+NO_UPDATE_SYNCTHING=TRUE
+NO_UPDATE_REMOTE=TRUE
 
 source $HOME/GIT/podcast-scripts/common-functions.sh
 
