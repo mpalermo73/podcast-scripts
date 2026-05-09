@@ -51,6 +51,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
     else
       [ ${DEBUG} ] && echo "Skipping old episode: ${RAW_TITLE} (${PUB_YEAR} <= ${LAST_YEAR})"
+      exit 0
     fi
 
   else
