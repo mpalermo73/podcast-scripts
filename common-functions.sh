@@ -24,7 +24,6 @@ PODCAST_ALBUM_ART="${TANK_LOCAL}/${PRETTY_NAME}.jpg"
 
 # TANK_LOCAL="/volume1/MEDIA/Podcasts/${PRETTY_NAME}"
 
-PODCAST_ALBUM_ART="${TANK_LOCAL}/${PRETTY_NAME}.jpg"
 QUALITY=100
 MAX_DIMENSION="1000"
 MAX_SIZE="1024"
@@ -270,7 +269,7 @@ function ProcessEpisode() {
       CopyEpisode "${TANK_LOCAL}/${OUTFILE}"
       [ ! ${NO_SLACK} ] && AnnounceEpisode
 
-    else [ -f "${TANK_LOCAL}/${OUTFILE}" ]
+    else
       [ ${DEBUG} ] && echo "HAVE: ${OUTFILE}"
 
       touch -d "$(date -d "${PUBDATE}" +%Y-%m-%d)" "${TANK_LOCAL}/${OUTFILE}"
