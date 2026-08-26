@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-URL_RSS="http://nightvale.libsyn.com/rss"
+# URL_RSS="http://nightvale.libsyn.com/rss"
+URL_RSS="https://feeds.megaphone.fm/SBP4591212513"
 PRETTY_NAME="Nightvale"
 GOOD_REGEX="^[0-9]+ "
 
