@@ -318,13 +318,22 @@ function GetItemJson(){
   
   ITEM=$1
 
-  yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" > "/tmp/${GENERIC_NAME}.json"
-
+  [ ! -f "/tmp/${GENERIC_NAME}.json" ] && convertFileToJson "/tmp/${GENERIC_NAME}.xml" > "/tmp/${GENERIC_NAME}.json"
   
-
   jq -r ".rss.channel.item[$((ITEM - 1))] | .title as \$title | .pubDate as \$pubDate | .enclosure.url as \$epurl | .itunes.image.href as \$image | .itunes.episodeType as \$type | .itunes.episode as \$track | .itunes.season as \$season | {RAW_TITLE: (\$title | if type == \"array\" then (.[0] | tostring) else (.|tostring) end), PUBDATE: \$pubDate, EPURL: \$epurl, IMAGE: \$image, TYPE: \$type, TRACK: \$track, SEASON: \$season}"
 }
 
+
+
+function convertFileToJson() {
+
+  if [ -f "$1" ] ; then
+    yq --input-format xml --output-format json --xml-attribute-prefix "" --xml-content-name text "$1" | jq 'walk(if type == "object" then with_entries(.key |= sub("^(itunes|content):"; "")) else . end)'
+  else
+    echo "File not found: $1" >&2
+    exit 1
+  fi
+}
 
 
 function DumpFound() {
@@ -354,45 +363,3 @@ function DumpFound() {
 function UnsetThese() {
   unset EPURL IMAGE MEDIA NEW_EPISODE OLD OUTFILE PART PUBDATE PUBEPOCH SEASON TITLE TRACK TYPE
 }
-
-
-#  curl -sL "rss" | yq --input-format xml --output-format json - | sed 's/\(.*\s\+"\)+@\?/\1/'
-
-# {
-# "title": "Feed Drop! Unwell 1.01: Homecoming",
-# "episodeType": "trailer"
-# }
-# {
-# "title": [
-# "2.09 Extraordinary Times",
-# "Extraordinary Times"
-# ],
-# "episodeType": "full"
-# }
-# jq '.rss.channel.item[] | select(.episodeType == "full") | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | {title,episodeType}'
-
-# {
-# "pubDate": "Wed, 11 Dec 2024 05:02:00 -0000",
-# "title": "The Matty Tapes - 3 - Christmas 1996",
-# "number": 62
-# }
-# palermo@aragorn [10:27:33 AM EDT] [~/Desktop/F & F]
-# curl -sL "https://fableandfolly.supportingcast.fm/content/eyJ0IjoicCIsImMiOiIxNjUwIiwidSI6IjIyNTkyMTEiLCJkIjoiMTY0MzMxNzU1OSIsImsiOjI4NX18MDA1ZWMxZmY5NzE4NWIxYjc4ZTJkZWYxNTdjMzJmNjE5Y2FkYTNiNmE0OGU2NGI1ODdhMGVkYWRiZDc3Y2QzZQ.rss" | yq --input-format xml --output-format json | sed 's/"+\?@\?/"/g' | jq . | jq '.rss.channel.item | reverse | range(0; length) as $i | (.[$i]) + {indexNumber: ($i + 1)} | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | . '
-
-
-# -> % cat ~/Desktop/oz9.json | jq '.rss.channel.item[1] | .title = (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) | .description = (.description // .summary) | .url = (.enclosure.url) | .image=(.image.href) | {title,pubDate,episodeType,season,episode,url,image,description}'
-
-# | sed 's/"+\?@\?/"/g' 
-
-
-# -> % cat ~/Desktop/oz9.json | jq -r '.rss.channel.item[10] | 
-  # "RAW_TITLE=\""+ (.title | if type=="array" then (.[0]|tostring) else (.|tostring) end) +"\"", 
-  # "PUBDATE=\""+ .pubDate +"\"", 
-  # "DESCRIPTION=\""+ (.description // .summary) +"\"", 
-  # "EPURL=\""+ (.enclosure.url) +"\"", 
-  # (if select(.image.href != null) then "IMAGE=\""+ .image.href +"\"" end),
-  # (if select(.episodeType != null) then "TYPE=\""+ .episodeType +"\"" end),
-  # (if select(.season != null) then "SEASON=\""+ .season +"\"" end),
-  # (if select(.episode != null) then "TRACK=\""+ .episode +"\"" end),
-  # (if select(.poop != null) then "POOP=\""+ .poop +"\"" end)
-  # '

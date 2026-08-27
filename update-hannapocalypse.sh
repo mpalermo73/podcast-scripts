@@ -28,7 +28,7 @@ if [ ${TYPE} == "full" ] && [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]]; then
 
   if [ "${PUB_YEAR}" -gt "${LAST_YEAR}" ] ; then
 
-    [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(yq --input-format xml --output-format json "/tmp/${GENERIC_NAME}.xml" | sed 's/"+@\?/"/g' | jq '[.rss.channel.item[] | select((.episodeType == "full") and ((.title | tostring)| match("[0-9]")))]' | jq length)
+    [ ! ${TRACK_COUNTING} ] && TRACK_COUNTING=$(convertFileToJson "/tmp/${GENERIC_NAME}.xml" | jq '[.rss.channel.item[] | select((.episodeType == "full") and ((.title | tostring)| match("[0-9]")))]' | jq length)
 
     TRACK=${TRACK_COUNTING}
     [[ ${#TRACK} -le 2 ]] && TRACK="0${TRACK}"

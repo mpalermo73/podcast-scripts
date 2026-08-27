@@ -36,5 +36,3 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
   # fi
 
 done
-
-# -> % curl -sL https://audioboom.com/channels/4256036.rss | yq -p=xml -o=json - | sed 's/+@//;s/itunes://' | jq '[.rss.channel.item[] | select(.episodeType == "full")]'

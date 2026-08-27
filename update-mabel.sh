@@ -34,5 +34,3 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
     [ ${DEBUG} ] && echo "FAIL regex: \"${RAW_TITLE}\""
   fi
 done
-
-# -> % curl -sL https://mabel.libsyn.com/rss | yq -p=xml -o=json - | sed 's/+@//;s/itunes://' | jq '[.rss.channel.item[] | select(.episodeType == "full").title]'
