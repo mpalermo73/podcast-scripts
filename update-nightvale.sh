@@ -8,13 +8,14 @@ GOOD_REGEX="^[0-9]+ "
 
 
 DEBUG=TRUE
-JUST_TEST=TRUE
+# JUST_TEST=TRUE
 NO_SLACK=TRUE
 NO_UPDATE_SYNCTHING=TRUE
-NO_UPDATE_REMOTE=TRUE
+# NO_UPDATE_REMOTE=TRUE
 
 
 source $HOME/GIT/podcast-scripts/common-functions.sh
+
 
 WriteFeed
 
@@ -22,7 +23,7 @@ for ITEM in $(seq 1 ${ITEM_COUNT}) ; do
 
   eval $(GetItem ${ITEM})
 
-  DumpFound
+  # DumpFound
 
   if [[ "${RAW_TITLE}" =~ ${GOOD_REGEX} ]] ; then
 
