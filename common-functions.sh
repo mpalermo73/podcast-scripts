@@ -77,7 +77,7 @@ function CopyEpisode() {
             [ ! -d "${MTANK}" ] && mkdir -p "${MTANK}"
             cp -a "$1" "${MTANK}/$(basename "$1")"
           else
-            [ ${DEBUG} ] && echo "EXISTS - ${MTANK}/$(basename "$1")"
+            [ ${DEBUG} ] && echo "HAVE - ${MTANK}/$(basename "$1")"
           fi
         fi
         ;;
@@ -91,7 +91,7 @@ function CopyEpisode() {
             [ ! -d "${MTANK}" ] && mkdir -p "${MTANK}"
             [ ! -f "${MTANK}/$(basename "$1")" ] && cp -a "$1" "${MTANK}/$(basename "$1")"
           else
-            [ ${DEBUG} ] && echo "EXISTS - ${MTANK}/$(basename "$1")"
+            [ ${DEBUG} ] && echo "HAVE - ${MTANK}/$(basename "$1")"
           fi
         fi
         ;;
@@ -236,9 +236,12 @@ function DisectInfo() {
 
     [ ${DEBUG} ] && DumpFound
 
-    [ ! ${JUST_TEST} ] && ProcessEpisode
+    # [ ! ${JUST_TEST} ] && 
+    ProcessEpisode
 
     UnsetThese
+
+    [ ${DEBUG} ] && echo -e "\n--------------------------- ${TRACK_COUNTING} (${ITEM} of ${ITEM_COUNT}) ---------------------------\n"
   else
     echo -e "\\n\\nTRACK is empty or not only numbers: \"${TRACK}\".  Bailing..."
     DumpFound
@@ -263,26 +266,35 @@ function ProcessEpisode() {
 
   else
 
-    if [ ! -f "${TANK_LOCAL}/${OUTFILE}" ] ; then
-      [ ${DEBUG} ] && echo "NEED: ${OUTFILE}"
+    if [ ! "${JUST_TEST}" ] ; then
 
-      GetEpisode "${TRACK}" "${TITLE}" "${OUTFILE}" "${PUBDATE}" "${EPURL}"
-      EpisodeTagging
-      CopyEpisode "${TANK_LOCAL}/${OUTFILE}"
-      [ ! ${NO_SLACK} ] && AnnounceEpisode
+      if [ ! -f "${TANK_LOCAL}/${OUTFILE}" ] ; then
+        [ ${DEBUG} ] && echo "NEED: ${OUTFILE}"
+
+        GetEpisode "${TRACK}" "${TITLE}" "${OUTFILE}" "${PUBDATE}" "${EPURL}"
+        EpisodeTagging
+        CopyEpisode "${TANK_LOCAL}/${OUTFILE}"
+        [ ! ${NO_SLACK} ] && AnnounceEpisode
+
+      else
+        [ ${DEBUG} ] && echo "HAVE: ${OUTFILE}"
+
+        touch -d "$(date -d "${PUBDATE}" +%Y-%m-%d)" "${TANK_LOCAL}/${OUTFILE}"
+        CopyEpisode "${TANK_LOCAL}/${OUTFILE}"
+      fi
+
+      UnsetThese
 
     else
-      [ ${DEBUG} ] && echo "HAVE: ${OUTFILE}"
-
-      touch -d "$(date -d "${PUBDATE}" +%Y-%m-%d)" "${TANK_LOCAL}/${OUTFILE}"
-      CopyEpisode "${TANK_LOCAL}/${OUTFILE}"
+      if [ -f "${TANK_LOCAL}/${OUTFILE}" ] ; then
+        [ ${DEBUG} ] && echo "HAVE - ${OUTFILE}"
+      else
+        [ ${DEBUG} ] && echo "NEED - ${OUTFILE}"
+      fi
     fi
-
-    UnsetThese
   fi
 
   UnsetThese
-  [ ${DEBUG} ] && echo "---------"
 }
 
 
@@ -320,7 +332,7 @@ function GetItemJson(){
 
   [ ! -f "/tmp/${GENERIC_NAME}.json" ] && convertFileToJson "/tmp/${GENERIC_NAME}.xml" > "/tmp/${GENERIC_NAME}.json"
   
-  jq -r ".rss.channel.item[$((ITEM - 1))] | .title as \$title | .pubDate as \$pubDate | .enclosure.url as \$epurl | .itunes.image.href as \$image | .itunes.episodeType as \$type | .itunes.episode as \$track | .itunes.season as \$season | {RAW_TITLE: (\$title | if type == \"array\" then (.[0] | tostring) else (.|tostring) end), PUBDATE: \$pubDate, EPURL: \$epurl, IMAGE: \$image, TYPE: \$type, TRACK: \$track, SEASON: \$season}"
+  jq -r ".rss.channel.item[$((ITEM - 1))] | .title as \$title | .pubDate as \$pubDate | .enclosure.url as \$epurl | .image.href as \$image | .episodeType as \$type | .episode as \$track | .season as \$season | {RAW_TITLE: (\$title | if type == \"array\" then (.[0] | tostring) else (.|tostring) end), PUBDATE: \$pubDate, EPURL: \$epurl, IMAGE: \$image, TYPE: \$type, TRACK: \$track, SEASON: \$season}" "/tmp/${GENERIC_NAME}.json"
 }
 
 
